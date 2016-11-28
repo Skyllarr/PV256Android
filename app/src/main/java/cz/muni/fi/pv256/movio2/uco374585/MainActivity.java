@@ -38,11 +38,13 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_refresh:
                 changeTheme();
                 return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
+        
     }
 
-    public void setRecyclerView() {
+    private void setRecyclerView() {
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
@@ -59,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setAdapter(mAdapter);
     }
 
-    public void setTheme(){
+    private void setTheme(){
         mPrefs = this.getApplicationContext().getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
         mDefaultTheme = mPrefs.getBoolean("defaultTheme", true);
         if (mDefaultTheme)
@@ -68,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
             this.setTheme(R.style.AppBaseTheme_AppBaseThemeBlue);
     }
 
-    public void changeTheme() {
+    private void changeTheme() {
         mDefaultTheme = !mDefaultTheme;
         SharedPreferences.Editor editor = mPrefs.edit();
         editor.putBoolean("defaultTheme", mDefaultTheme);
