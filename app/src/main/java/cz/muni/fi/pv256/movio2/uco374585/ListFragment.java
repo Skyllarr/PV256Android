@@ -3,9 +3,10 @@ package cz.muni.fi.pv256.movio2.uco374585;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -22,6 +23,7 @@ import java.util.List;
 
 public class ListFragment extends Fragment {
 
+    private static final String TAG = "ListFragment";
     List<Movie> movies = new ArrayList<>();
     private Movie movie;
 
@@ -35,9 +37,41 @@ public class ListFragment extends Fragment {
     }
 
     @Override
+    public void onAttach (Context context) {
+        Log.i(TAG, "ListFragment was attached to its context");
+        super.onAttach(context);
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         createFakeMoviesData();
+    }
+
+    @Override
+    public void onStart() {
+        Log.i(TAG, "ListFragment is now visible to the user");
+        super.onStart();
+    }
+
+    @Override
+    public void onResume() {
+        Log.i(TAG, "ListFragment is now able to interact with the user");
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        Log.i(TAG, "ListFragment is no longer interacting with the user either " +
+                "because its activity is being paused or a fragment operation is modifying it in the activity.");
+        super.onPause();
+    }
+
+    @Override
+    public void onStop() {
+        Log.i(TAG, "ListFragment fragment is no longer visible to the user either " +
+                "because its activity is being stopped or a fragment operation is modifying it in the activity.");
+        super.onStop();
     }
 
     @Override
@@ -70,6 +104,25 @@ public class ListFragment extends Fragment {
                 showDetail(movies.get(2));
             }
         });
+    }
+
+    @Override
+    public void onDestroyView() {
+        Log.i(TAG, "Here it is possible to clean up resources associated with ListFragment" +
+                "because View is being destroyed");
+        super.onDestroyView();
+    }
+
+    @Override
+    public void onDestroy() {
+        Log.i(TAG, "ListFragment is being destroyed, here clean up its resources");
+        super.onDestroy();
+    }
+
+    @Override
+    public void onDetach() {
+        Log.i(TAG, "ListFragment is being detached from activity");
+        super.onDetach();
     }
 
     private long convertDateToLong(String dateString) {

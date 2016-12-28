@@ -8,15 +8,17 @@ import android.content.SharedPreferences;
 import android.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String TAG = "ListFragment";
     private SharedPreferences mPrefs;
     private Boolean mDefaultTheme;
     private FragmentManager manager;
-    private Fragment myfragment;
+    private Fragment myFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,11 +30,11 @@ public class MainActivity extends AppCompatActivity {
             boolean tabletSize = getResources().getBoolean(R.bool.isTablet);
             manager = getFragmentManager();
             FragmentTransaction transaction = manager.beginTransaction();
-            myfragment = ListFragment.newInstance();
+            myFragment = ListFragment.newInstance();
             if (tabletSize) {
-                transaction.add(R.id.home_fragment, myfragment);
+                transaction.add(R.id.home_fragment, myFragment);
             } else {
-                transaction.add(R.id.fragment_container, myfragment);
+                transaction.add(R.id.fragment_container, myFragment);
             }
             transaction.addToBackStack(null);
             transaction.commit();
@@ -40,16 +42,53 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onStart(){
+        Log.i(TAG, "MainActivity is now becoming visible to the user");
+        super.onStart();
+    }
+
+    @Override
+    protected void onRestart(){
+        Log.i(TAG, "MainActivity Called after your activity has been stopped, prior to it being started again.");
+        super.onRestart();
+    }
+
+    @Override
+    protected void onResume(){
+        Log.i(TAG, "MainActivity  start interacting with the user. " +
+                "At this point your activity is at the top of the activity stack, with user input going to it.");
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause(){
+        Log.i(TAG, "System is about to start resuming a previous activity.");
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop(){
+        Log.i(TAG, "MainActivity is no longer visible to the user");
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy(){
+        Log.i(TAG, "MainActivity will be destroyed now.");
+        super.onDestroy();
+    }
+
+    @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         mPrefs = this.getApplicationContext().getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
         savedInstanceState.putString("theme", "" + mPrefs.getBoolean("defaultTheme", true));
-        if (myfragment != null && myfragment.isAdded())
-            getFragmentManager().putFragment(savedInstanceState, "myfragment", myfragment);
+        if (myFragment != null && myFragment.isAdded())
+            getFragmentManager().putFragment(savedInstanceState, "myfragment", myFragment);
         super.onSaveInstanceState(savedInstanceState);
     }
 
     public void onRestoreInstanceState(Bundle inState) {
-        myfragment = getFragmentManager().getFragment(inState, "myfragment");
+        myFragment = getFragmentManager().getFragment(inState, "myfragment");
     }
 
     @Override
@@ -67,8 +106,8 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_home:
                 if (!getResources().getBoolean(R.bool.isTablet)) {
                     FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                    myfragment = ListFragment.newInstance();
-                    transaction.replace(R.id.fragment_container, myfragment);
+                    myFragment = ListFragment.newInstance();
+                    transaction.replace(R.id.fragment_container, myFragment);
                     transaction.addToBackStack(null);
                     transaction.commit();
                 }
