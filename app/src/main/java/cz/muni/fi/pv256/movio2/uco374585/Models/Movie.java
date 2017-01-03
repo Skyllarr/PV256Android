@@ -1,4 +1,4 @@
-package cz.muni.fi.pv256.movio2.uco374585;
+package cz.muni.fi.pv256.movio2.uco374585.Models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -10,9 +10,9 @@ import android.os.Parcelable;
 public class Movie implements Parcelable {
 
     long releaseDate;
-    String coverPath;
+    int coverPath;
     String title;
-    String backdrop;
+    int backdrop;
     float popularity;
     String description;
 
@@ -20,7 +20,7 @@ public class Movie implements Parcelable {
         return releaseDate;
     }
 
-    public String getCoverPath() {
+    public int getCoverPath() {
         return coverPath;
     }
 
@@ -28,7 +28,7 @@ public class Movie implements Parcelable {
         return title;
     }
 
-    public String getBackdrop() {
+    public int getBackdrop() {
         return backdrop;
     }
 
@@ -42,9 +42,9 @@ public class Movie implements Parcelable {
 
     public Movie(Parcel parcel) {
         this.releaseDate = parcel.readLong();
-        this.coverPath = parcel.readString();
+        this.coverPath = parcel.readInt();
         this.title = parcel.readString();
-        this.backdrop = parcel.readString();
+        this.backdrop = parcel.readInt();
         this.popularity = parcel.readFloat();
         this.description = parcel.readString();
     }
@@ -52,9 +52,9 @@ public class Movie implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeLong(this.releaseDate);
-        dest.writeString(this.coverPath);
+        dest.writeInt(this.coverPath);
         dest.writeString(this.title);
-        dest.writeString(this.backdrop);
+        dest.writeInt(this.backdrop);
         dest.writeFloat(this.popularity);
         dest.writeString(this.description);
     }
@@ -69,7 +69,7 @@ public class Movie implements Parcelable {
         }
     };
 
-    public Movie(long releaseDate, String coverPath, String title, String backdrop, float popularity, String description) {
+    public Movie(long releaseDate, int coverPath, String title, int backdrop, float popularity, String description) {
         this.releaseDate = releaseDate;
         this.coverPath = coverPath;
         this.title = title;

@@ -13,6 +13,8 @@ import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 
+import cz.muni.fi.pv256.movio2.uco374585.Models.Movie;
+
 public class MovieDetailFragment extends Fragment {
 
     private Movie movie;
@@ -40,35 +42,10 @@ public class MovieDetailFragment extends Fragment {
     public void setImages(View view) {
         ImageView backdrop_imageView = (ImageView) view.findViewById(R.id.movie_backdrop);
         ImageView movie_imageView = (ImageView) view.findViewById(R.id.movie_image);
-        Drawable backdrop;
-        Drawable mainPic;
-        switch (movie.getTitle()) {
-            case "Miss":
-                backdrop = (ResourcesCompat.getDrawable(getResources(),
-                        R.drawable.miss_peregrines_home_for_peculiar_children_backdrop, null));
-                mainPic = (ResourcesCompat.getDrawable(getResources(),
-                        R.drawable.miss_peregrines_home_for_peculiar_children, null));
-                break;
-            case "Rings":
-                backdrop = (ResourcesCompat.getDrawable(getResources(),
-                        R.drawable.rings_backdrop, null));
-                mainPic = (ResourcesCompat.getDrawable(getResources(),
-                        R.drawable.rings, null));
-                break;
-            case "Deepwater":
-                backdrop = (ResourcesCompat.getDrawable(getResources(),
-                        R.drawable.deepwater_horizon_backdrop, null));
-                mainPic = (ResourcesCompat.getDrawable(getResources(),
-                        R.drawable.deepwater_horizon, null));
-                break;
-            default:
-                backdrop = (ResourcesCompat.getDrawable(getResources(),
-                        R.drawable.miss_peregrines_home_for_peculiar_children_backdrop, null));
-                mainPic = (ResourcesCompat.getDrawable(getResources(),
-                        R.drawable.miss_peregrines_home_for_peculiar_children, null));
-        }
-        backdrop_imageView.setImageDrawable(backdrop);
-        movie_imageView.setImageDrawable(mainPic);
+        backdrop_imageView.setImageDrawable(ResourcesCompat.getDrawable(getResources(),
+                movie.getBackdrop(), null));
+        movie_imageView.setImageDrawable(ResourcesCompat.getDrawable(getResources(),
+                movie.getCoverPath(), null));
     }
 
     public void setTexts(View view) {
