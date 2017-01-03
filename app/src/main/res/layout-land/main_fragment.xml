@@ -39,7 +39,7 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recycler_view_movies_category1"
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
+                android:layout_height="150dp"
                 android:scrollbars="vertical" />
 
             <TextView
@@ -56,7 +56,7 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recycler_view_movies_category2"
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
+                android:layout_height="150dp"
                 android:scrollbars="vertical" />
 
             <TextView
@@ -73,7 +73,7 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recycler_view_movies_category3"
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
+                android:layout_height="150dp"
                 android:scrollbars="vertical" />
         </LinearLayout>
     </ScrollView>
