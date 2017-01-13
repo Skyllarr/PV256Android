@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
                 transaction.add(R.id.home_fragment, activeFragment, "ListFragment");
             } else {
                 transaction.add(R.id.fragment_container, activeFragment, "ListFragment");
+
             }
             transaction.addToBackStack(null);
             transaction.commit();
