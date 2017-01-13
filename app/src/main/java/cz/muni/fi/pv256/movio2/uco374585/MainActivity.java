@@ -32,9 +32,9 @@ public class MainActivity extends AppCompatActivity {
             FragmentTransaction transaction = manager.beginTransaction();
             myFragment = ListFragment.newInstance();
             if (tabletSize) {
-                transaction.add(R.id.home_fragment, myFragment);
+                transaction.add(R.id.home_fragment, myFragment, "HOME_FRAGMENT");
             } else {
-                transaction.add(R.id.fragment_container, myFragment);
+                transaction.add(R.id.fragment_container, myFragment, "HOME_FRAGMENT");
             }
             transaction.addToBackStack(null);
             transaction.commit();
@@ -42,38 +42,38 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStart(){
+    protected void onStart() {
         Log.i(TAG, "MainActivity is now becoming visible to the user");
         super.onStart();
     }
 
     @Override
-    protected void onRestart(){
+    protected void onRestart() {
         Log.i(TAG, "MainActivity Called after your activity has been stopped, prior to it being started again.");
         super.onRestart();
     }
 
     @Override
-    protected void onResume(){
+    protected void onResume() {
         Log.i(TAG, "MainActivity  start interacting with the user. " +
                 "At this point your activity is at the top of the activity stack, with user input going to it.");
         super.onResume();
     }
 
     @Override
-    protected void onPause(){
+    protected void onPause() {
         Log.i(TAG, "System is about to start resuming a previous activity.");
         super.onPause();
     }
 
     @Override
-    protected void onStop(){
+    protected void onStop() {
         Log.i(TAG, "MainActivity is no longer visible to the user");
         super.onStop();
     }
 
     @Override
-    protected void onDestroy(){
+    protected void onDestroy() {
         Log.i(TAG, "MainActivity will be destroyed now.");
         super.onDestroy();
     }
@@ -105,11 +105,13 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.action_home:
                 if (!getResources().getBoolean(R.bool.isTablet)) {
-                    FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                    myFragment = ListFragment.newInstance();
-                    transaction.replace(R.id.fragment_container, myFragment);
-                    transaction.addToBackStack(null);
-                    transaction.commit();
+                    Fragment homeFragment = getFragmentManager().findFragmentByTag("HOME_FRAGMENT");
+                    if (homeFragment != null && !homeFragment.isVisible()) {
+                        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                        transaction.replace(R.id.fragment_container, myFragment, "HOME_FRAGMENT");
+                        transaction.addToBackStack(null);
+                        transaction.commit();
+                    }
                 }
                 return true;
             default:

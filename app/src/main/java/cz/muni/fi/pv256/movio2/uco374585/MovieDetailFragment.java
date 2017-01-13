@@ -41,10 +41,8 @@ public class MovieDetailFragment extends Fragment {
     public void setImages(View view) {
         ImageView backdrop_imageView = (ImageView) view.findViewById(R.id.movie_backdrop);
         ImageView movie_imageView = (ImageView) view.findViewById(R.id.movie_image);
-        backdrop_imageView.setImageDrawable(ResourcesCompat.getDrawable(getResources(),
-                movie.getBackdrop(), null));
-        movie_imageView.setImageDrawable(ResourcesCompat.getDrawable(getResources(),
-                movie.getCoverPath(), null));
+        backdrop_imageView.setImageResource(movie.getBackdrop());
+        movie_imageView.setImageResource(movie.getCoverPath());
     }
 
     public void setTexts(View view) {

@@ -6,7 +6,9 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.graphics.Palette;
@@ -16,14 +18,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+
 import cz.muni.fi.pv256.movio2.uco374585.Models.Movie;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     List<Movie> movies = Collections.emptyList();
-    View v;
+    View view;
     Context context;
 
     public RecyclerViewAdapter(List<Movie> movies, Context context) {
@@ -33,26 +38,29 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_movie_layout, parent, false);
-        return new ViewHolder(v);
+        view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_movie_layout, parent, false);
+        return new ViewHolder(view);
     }
 
-    public void setMovieImageWithBottomPanel(ViewHolder holder, Movie movie){
-        BitmapDrawable drawable = (BitmapDrawable) (ResourcesCompat.getDrawable(
-                v.getContext().getResources(), movie.getCoverPath(), null));
-        Bitmap bitmap = drawable.getBitmap();
-        Palette palette = Palette.from(bitmap).generate();
 
-        ImageView bottomPanel = (ImageView) holder.itemView.findViewById(R.id.movie_bottom_panel);
-        bottomPanel.setBackgroundColor(palette.getDarkMutedColor(0));
-        bottomPanel.setAlpha(0.5f);
-        holder.itemView.findViewById(R.id.movie_title).setAlpha(1);
-        TextView movieTitle = (TextView) holder.itemView.findViewById(R.id.movie_title);
-        movieTitle.setText(movie.getTitle());
-        holder.imageView.setImageBitmap(bitmap);
-
-        TextView rating = (TextView) holder.itemView.findViewById(R.id.rating_number);
-        rating.setText("" + movie.getPopularity());
+    public void setMovieImageWithBottomPanel(final ViewHolder holder, Movie movie) {
+        holder.imageView.setImageResource(movie.getCoverPath());
+        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), movie.getCoverPath());
+        if (bitmap != null && !bitmap.isRecycled()) {
+            Palette.PaletteAsyncListener listener = new Palette.PaletteAsyncListener() {
+                public void onGenerated(Palette palette) {
+                    ImageView bottomPanel = (ImageView) holder.itemView.findViewById(R.id.movie_bottom_panel);
+                    bottomPanel.setBackgroundColor(palette.getDarkMutedColor(0));
+                    bottomPanel.setAlpha(0.5f);
+                }
+            };
+            Palette.from(bitmap).generate(listener);
+            holder.itemView.findViewById(R.id.movie_title).setAlpha(1);
+            TextView movieTitle = (TextView) holder.itemView.findViewById(R.id.movie_title);
+            movieTitle.setText(movie.getTitle());
+            TextView rating = (TextView) holder.itemView.findViewById(R.id.rating_number);
+            rating.setText("" + movie.getPopularity());
+        }
     }
 
     public void viewMovieDetailFragment(Movie movie) {
