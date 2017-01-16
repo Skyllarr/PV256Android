@@ -26,14 +26,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="130dp"
                 android:scaleType="fitXY"
-                app:srcCompat="@drawable/rings_backdrop" />
+                app:srcCompat="@drawable/loading" />
 
             <ImageView
                 android:id="@+id/movie_image"
                 android:layout_width="100dp"
                 android:layout_height="130dp"
                 android:layout_marginTop="80dp"
-                app:srcCompat="@drawable/rings" />
+                app:srcCompat="@drawable/loading" />
 
             <TextView
                 android:id="@+id/movie_title"
@@ -82,7 +82,8 @@
                     android:id="@+id/movie_description"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Movie Description" />
+                    android:layout_marginTop="25dp"
+                    android:text="Missing Description" />
             </ScrollView>
         </LinearLayout>
 

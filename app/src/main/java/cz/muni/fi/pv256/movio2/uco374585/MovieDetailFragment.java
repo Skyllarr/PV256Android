@@ -10,6 +10,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+
 import java.text.SimpleDateFormat;
 
 import cz.muni.fi.pv256.movio2.uco374585.Models.Movie;
@@ -17,6 +20,7 @@ import cz.muni.fi.pv256.movio2.uco374585.Models.Movie;
 public class MovieDetailFragment extends Fragment {
 
     private Movie movie;
+    ImageLoader imageLoader;
 
     public MovieDetailFragment() {
         // Required empty public constructor
@@ -36,13 +40,13 @@ public class MovieDetailFragment extends Fragment {
         if (getArguments() != null) {
             movie = getArguments().getParcelable("movie");
         }
+        imageLoader = ImageLoader.getInstance();
+        imageLoader.init(ImageLoaderConfiguration.createDefault(getContext()));
     }
 
     public void setImages(View view) {
-        ImageView backdrop_imageView = (ImageView) view.findViewById(R.id.movie_backdrop);
-        ImageView movie_imageView = (ImageView) view.findViewById(R.id.movie_image);
-        backdrop_imageView.setImageResource(movie.getBackdrop());
-        movie_imageView.setImageResource(movie.getCoverPath());
+        imageLoader.displayImage(movie.getCoverPath(),(ImageView) view.findViewById(R.id.movie_image));
+        imageLoader.displayImage(movie.getBackdrop(),(ImageView) view.findViewById(R.id.movie_backdrop));
     }
 
     public void setTexts(View view) {
@@ -50,10 +54,10 @@ public class MovieDetailFragment extends Fragment {
         title.setText(movie.getTitle());
 
         TextView releaseDate = (TextView) view.findViewById(R.id.release_date);
-        releaseDate.setText(String.valueOf(new SimpleDateFormat("yyyy/MM/dd").format(movie.getReleaseDate())));
+        releaseDate.setText(movie.getReleaseDate());
 
         TextView description = (TextView) view.findViewById(R.id.movie_description);
-        description.setText(String.valueOf(movie.getDescription()));
+        description.setText(movie.getDescription());
 
         TextView popularity = (TextView) view.findViewById(R.id.popularity);
         popularity.setText("" + movie.getPopularity());
