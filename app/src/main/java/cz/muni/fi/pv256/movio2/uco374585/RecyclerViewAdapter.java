@@ -6,11 +6,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -19,9 +15,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
+
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import cz.muni.fi.pv256.movio2.uco374585.Models.Movie;
 
@@ -30,10 +31,20 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
     List<Movie> movies = Collections.emptyList();
     View view;
     Context context;
+    ImageLoader imageLoader;
 
     public RecyclerViewAdapter(List<Movie> movies, Context context) {
         this.movies = movies;
         this.context = context;
+        DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
+                .cacheInMemory(true)
+                .cacheOnDisk(true)
+                .build();
+        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context)
+                .defaultDisplayImageOptions(defaultOptions)
+                .build();
+        imageLoader = ImageLoader.getInstance();
+        imageLoader.init(config);
     }
 
     @Override
@@ -44,23 +55,45 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
 
 
     public void setMovieImageWithBottomPanel(final ViewHolder holder, Movie movie) {
-        holder.imageView.setImageResource(movie.getCoverPath());
-        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), movie.getCoverPath());
-        if (bitmap != null && !bitmap.isRecycled()) {
-            Palette.PaletteAsyncListener listener = new Palette.PaletteAsyncListener() {
-                public void onGenerated(Palette palette) {
-                    ImageView bottomPanel = (ImageView) holder.itemView.findViewById(R.id.movie_bottom_panel);
-                    bottomPanel.setBackgroundColor(palette.getDarkMutedColor(0));
-                    bottomPanel.setAlpha(0.5f);
+        holder.imageView.setImageResource(R.drawable.loading);
+        imageLoader.displayImage(movie.getCoverPath(), holder.imageView, null, new ImageLoadingListener() {
+            @Override
+            public void onLoadingStarted(String imageUri, View view) {
+
+            }
+
+            @Override
+            public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+
+            }
+
+            @Override
+            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                holder.imageView.setImageBitmap(loadedImage);
+                if (loadedImage != null && !loadedImage.isRecycled()) {
+                    Palette.PaletteAsyncListener listener = new Palette.PaletteAsyncListener() {
+                        public void onGenerated(Palette palette) {
+                            ImageView bottomPanel = (ImageView) holder.itemView.findViewById(R.id.movie_bottom_panel);
+                            bottomPanel.setBackgroundColor(palette.getDarkMutedColor(0));
+                            bottomPanel.setAlpha(0.8f);
+                        }
+                    };
+                    Palette.from(loadedImage).generate(listener);
+                    holder.itemView.findViewById(R.id.movie_title).setAlpha(1);
                 }
-            };
-            Palette.from(bitmap).generate(listener);
-            holder.itemView.findViewById(R.id.movie_title).setAlpha(1);
-            TextView movieTitle = (TextView) holder.itemView.findViewById(R.id.movie_title);
-            movieTitle.setText(movie.getTitle());
-            TextView rating = (TextView) holder.itemView.findViewById(R.id.rating_number);
-            rating.setText("" + movie.getPopularity());
-        }
+            }
+
+            @Override
+            public void onLoadingCancelled(String imageUri, View view) {
+
+            }
+        });
+
+        TextView movieTitle = (TextView) holder.itemView.findViewById(R.id.movie_title);
+        movieTitle.setText(movie.getTitle());
+        movieTitle.setSelected(true);
+        TextView rating = (TextView) holder.itemView.findViewById(R.id.rating_number);
+        rating.setText("" + movie.getPopularity());
     }
 
     public void viewMovieDetailFragment(Movie movie) {

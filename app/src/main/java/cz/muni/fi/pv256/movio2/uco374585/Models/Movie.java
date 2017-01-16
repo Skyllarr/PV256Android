@@ -9,18 +9,36 @@ import android.os.Parcelable;
 
 public class Movie implements Parcelable {
 
-    long releaseDate;
-    int coverPath;
     String title;
-    int backdrop;
+    String releaseDate;
+    String coverPath;
+    String backdrop;
     float popularity;
     String description;
 
-    public long getReleaseDate() {
+    public Movie(Parcel parcel) {
+        this.releaseDate = parcel.readString();
+        this.coverPath = parcel.readString();
+        this.title = parcel.readString();
+        this.backdrop = parcel.readString();
+        this.popularity = parcel.readFloat();
+        this.description = parcel.readString();
+    }
+
+    public Movie(String releaseDate, String coverPath, String title, String backdrop, float popularity, String description) {
+        this.releaseDate = releaseDate;
+        this.coverPath = coverPath;
+        this.title = title;
+        this.backdrop = backdrop;
+        this.popularity = popularity;
+        this.description = description;
+    }
+
+    public String getReleaseDate() {
         return releaseDate;
     }
 
-    public int getCoverPath() {
+    public String getCoverPath() {
         return coverPath;
     }
 
@@ -28,7 +46,7 @@ public class Movie implements Parcelable {
         return title;
     }
 
-    public int getBackdrop() {
+    public String getBackdrop() {
         return backdrop;
     }
 
@@ -40,21 +58,12 @@ public class Movie implements Parcelable {
         return description;
     }
 
-    public Movie(Parcel parcel) {
-        this.releaseDate = parcel.readLong();
-        this.coverPath = parcel.readInt();
-        this.title = parcel.readString();
-        this.backdrop = parcel.readInt();
-        this.popularity = parcel.readFloat();
-        this.description = parcel.readString();
-    }
-
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong(this.releaseDate);
-        dest.writeInt(this.coverPath);
+        dest.writeString(this.releaseDate);
+        dest.writeString(this.coverPath);
         dest.writeString(this.title);
-        dest.writeInt(this.backdrop);
+        dest.writeString(this.backdrop);
         dest.writeFloat(this.popularity);
         dest.writeString(this.description);
     }
@@ -69,17 +78,10 @@ public class Movie implements Parcelable {
         }
     };
 
-    public Movie(long releaseDate, int coverPath, String title, int backdrop, float popularity, String description) {
-        this.releaseDate = releaseDate;
-        this.coverPath = coverPath;
-        this.title = title;
-        this.backdrop = backdrop;
-        this.popularity = popularity;
-        this.description = description;
-    }
-
     @Override
     public int describeContents() {
         return 0;
     }
+
+
 }
