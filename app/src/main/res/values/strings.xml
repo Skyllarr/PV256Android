@@ -2,7 +2,7 @@
     <string name="app_name">Movio</string>
     <string name="displaying">Most popular</string>
     <string name="category1">This week opening</string>
-    <string name="category2">Most popular this year</string>
+    <string name="category2">Most upvoted this year</string>
     <string name="category3">Most popular of all times</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="movie_title">Movie Title</string>

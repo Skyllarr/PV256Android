@@ -3,6 +3,7 @@ package cz.muni.fi.pv256.movio2.uco374585;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -19,14 +20,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ExecutionException;
 
 import cz.muni.fi.pv256.movio2.uco374585.Data.MovieDataSingleton;
 import cz.muni.fi.pv256.movio2.uco374585.Models.Movie;
-
-import static cz.muni.fi.pv256.movio2.uco374585.Api.ApiQuery.API_KEY;
-import static cz.muni.fi.pv256.movio2.uco374585.Api.ApiQuery.TMDB_URL;
+import cz.muni.fi.pv256.movio2.uco374585.Service.TmdbPullService;
 
 /**
  * Created by Skylar on 12/27/2016.
@@ -76,44 +73,15 @@ public class ListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        loadAndStoreMovies();
-    }
 
-    public void loadAndStoreMovies() {
-        try {
-            if (isInternetAvailable() && MovieDataSingleton.getInstance().isEmpty()) {
-                Uri.Builder builder = new Uri.Builder();
-                builder.scheme("https")
-                        .authority(TMDB_URL)
-                        .appendPath("3")
-                        .appendPath("discover")
-                        .appendPath("movie")
-                        .appendQueryParameter("primary_release_date.gte", todayDate())
-                        .appendQueryParameter("primary_release_date.lte", weekFromToday())
-                        .appendQueryParameter("api_key", API_KEY);
-                String moviesThisWeekFetchMoviesUrl = builder.build().toString();
-
-                builder.clearQuery()
-                        .appendQueryParameter("primary_release_year", "" + 2017)
-                        .appendQueryParameter("sort_by", "popularity.desc").appendQueryParameter("api_key", API_KEY);
-                String mostPopularThisYearFetchMoviesUrl = builder.build().toString();
-                builder.clearQuery()
-                        .appendQueryParameter("sort_by", "vote_average.desc").appendQueryParameter("api_key", API_KEY);
-                String mostPopularAllTimeMoviesUrl = builder.build().toString();
-
-                String[] urls = new String[]{moviesThisWeekFetchMoviesUrl,
-                        mostPopularThisYearFetchMoviesUrl,
-                        mostPopularAllTimeMoviesUrl};
-
-                Map<String, List<Movie>> allMoviesMap = new MovieDownloader().execute(urls).get();
-                MovieDataSingleton.getInstance().setMoviesThisWeek(allMoviesMap.get(moviesThisWeekFetchMoviesUrl));
-                MovieDataSingleton.getInstance().setMoviesPopularThisYear(allMoviesMap.get(mostPopularThisYearFetchMoviesUrl));
-                MovieDataSingleton.getInstance().setMoviesPopularAllTime(allMoviesMap.get(mostPopularAllTimeMoviesUrl));
-            }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
+        if (isInternetAvailable() && MovieDataSingleton.getInstance().isEmpty()) {
+            Intent mServiceIntent = new Intent(getActivity(), TmdbPullService.class);
+            mServiceIntent.setData(Uri.parse("category1"));
+            getActivity().startService(mServiceIntent);
+            mServiceIntent.setData(Uri.parse("category2"));
+            getActivity().startService(mServiceIntent);
+            mServiceIntent.setData(Uri.parse("category3"));
+            getActivity().startService(mServiceIntent);
         }
     }
 
