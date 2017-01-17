@@ -39,7 +39,7 @@ public class DummyDataMovies {
         return movies;
     }
 
-    public List<Movie> getDataNextDays() {
+    public List<Movie> getDataNow() {
         List<Movie> movies = new ArrayList<>();
         movies.add(new Movie(convertDateToLong("2017/02/02"), R.drawable.boo, "Boo",
                 R.drawable.boo_backdrop, 85f, "OVERVIEW \n\nMadea winds up in the middle of mayhem when she spends a haunted Halloween fending off killers, paranormal poltergeists, ghosts, ghouls and zombies while keeping a watchful eye on a group of misbehaving teens."));
@@ -53,7 +53,7 @@ public class DummyDataMovies {
         return movies;
     }
 
-    public List<Movie> getDataNow() {
+    public List<Movie> getDataNextDays() {
         List<Movie> movies = new ArrayList<>();
         movies.add(new Movie(convertDateToLong("2016/09/29"), R.drawable.miss_peregrines_home_for_peculiar_children, "Miss Peregrine's home for peculiar children",
                 R.drawable.miss_peregrines_home_for_peculiar_children_backdrop, 75f, "OVERVIEW \n\nMiss Peregrine's Home for Peculiar Children is the debut novel by American author Ransom Riggs. It is a story of a boy who, following a horrific family tragedy, follows clues that take him to an abandoned children's home on a Welsh island."));
