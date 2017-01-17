@@ -16,10 +16,12 @@ public class MovieDataSingleton {
     List<Movie> moviesPopularThisYear = new ArrayList<>();
     List<Movie> moviesPopularAllTime = new ArrayList<>();
 
-    public static MovieDataSingleton getInstance()
-    {
-        if(instance == null)
-        {
+    private MovieDataSingleton() {
+        // Constructor hidden because this is a singleton
+    }
+
+    public static MovieDataSingleton getInstance() {
+        if (instance == null) {
             instance = new MovieDataSingleton();
         }
         return instance;
@@ -47,11 +49,6 @@ public class MovieDataSingleton {
 
     public void setMoviesPopularAllTime(List<Movie> moviesPopularAllTime) {
         this.moviesPopularAllTime = moviesPopularAllTime;
-    }
-
-    private MovieDataSingleton()
-    {
-        // Constructor hidden because this is a singleton
     }
 
     public boolean isEmpty() {

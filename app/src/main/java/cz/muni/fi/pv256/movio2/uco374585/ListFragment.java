@@ -2,8 +2,10 @@ package cz.muni.fi.pv256.movio2.uco374585;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,15 +14,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import java.util.List;
-import java.util.concurrent.ExecutionException;
+
 import cz.muni.fi.pv256.movio2.uco374585.Data.MovieDataSingleton;
 import cz.muni.fi.pv256.movio2.uco374585.Models.Movie;
-import static cz.muni.fi.pv256.movio2.uco374585.Api.ApiQuery.API_KEY;
-import static cz.muni.fi.pv256.movio2.uco374585.Api.ApiQuery.DISCOVER_URL;
-import static cz.muni.fi.pv256.movio2.uco374585.Api.ApiQuery.MOST_POPULAR_EVER_URL;
-import static cz.muni.fi.pv256.movio2.uco374585.Api.ApiQuery.MOST_POPULAR_THIS_YEAR_URL;
-import static cz.muni.fi.pv256.movio2.uco374585.Api.ApiQuery.THIS_WEEK_URL;
+import cz.muni.fi.pv256.movio2.uco374585.Service.TmdbPullService;
 
 /**
  * Created by Skylar on 12/27/2016.
@@ -60,16 +59,17 @@ public class ListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        try {
-            if (isInternetAvailable() && MovieDataSingleton.getInstance().isEmpty()) {
-                MovieDataSingleton.getInstance().setMoviesThisWeek(new MovieDownloader().execute(DISCOVER_URL + THIS_WEEK_URL + API_KEY).get()); ;
-                MovieDataSingleton.getInstance().setMoviesPopularThisYear(new MovieDownloader().execute(DISCOVER_URL + MOST_POPULAR_THIS_YEAR_URL + API_KEY).get());
-                MovieDataSingleton.getInstance().setMoviesPopularAllTime(new MovieDownloader().execute(DISCOVER_URL + MOST_POPULAR_EVER_URL + API_KEY).get());
-            }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
+        if (isInternetAvailable() && MovieDataSingleton.getInstance().isEmpty()) {
+            Intent mServiceIntent = new Intent(getActivity(), TmdbPullService.class);
+            mServiceIntent.setData(Uri.parse("category1"));
+            getActivity().startService(mServiceIntent);
+            mServiceIntent.setData(Uri.parse("category2"));
+            getActivity().startService(mServiceIntent);
+            mServiceIntent.setData(Uri.parse("category3"));
+            getActivity().startService(mServiceIntent);
+            //MovieDataSingleton.getInstance().setMoviesThisWeek(new MovieDownloader().execute(DISCOVER_URL + THIS_WEEK_URL + API_KEY).get());
+            //MovieDataSingleton.getInstance().setMoviesPopularThisYear(new MovieDownloader().execute(DISCOVER_URL + MOST_POPULAR_THIS_YEAR_URL + API_KEY).get());
+            //MovieDataSingleton.getInstance().setMoviesPopularAllTime(new MovieDownloader().execute(DISCOVER_URL + MOST_POPULAR_EVER_URL + API_KEY).get());
         }
     }
 

@@ -1,9 +1,7 @@
 package cz.muni.fi.pv256.movio2.uco374585;
 
-import android.graphics.drawable.Drawable;
-import android.os.Bundle;
 import android.app.Fragment;
-import android.support.v4.content.res.ResourcesCompat;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,14 +11,12 @@ import android.widget.TextView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
-import java.text.SimpleDateFormat;
-
 import cz.muni.fi.pv256.movio2.uco374585.Models.Movie;
 
 public class MovieDetailFragment extends Fragment {
 
-    private Movie movie;
     ImageLoader imageLoader;
+    private Movie movie;
 
     public MovieDetailFragment() {
         // Required empty public constructor
@@ -45,8 +41,8 @@ public class MovieDetailFragment extends Fragment {
     }
 
     public void setImages(View view) {
-        imageLoader.displayImage(movie.getCoverPath(),(ImageView) view.findViewById(R.id.movie_image));
-        imageLoader.displayImage(movie.getBackdrop(),(ImageView) view.findViewById(R.id.movie_backdrop));
+        imageLoader.displayImage(movie.getCoverPath(), (ImageView) view.findViewById(R.id.movie_image));
+        imageLoader.displayImage(movie.getBackdrop(), (ImageView) view.findViewById(R.id.movie_backdrop));
     }
 
     public void setTexts(View view) {

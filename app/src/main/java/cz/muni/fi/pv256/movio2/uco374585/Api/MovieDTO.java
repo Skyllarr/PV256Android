@@ -2,8 +2,6 @@ package cz.muni.fi.pv256.movio2.uco374585.Api;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
-
 import cz.muni.fi.pv256.movio2.uco374585.Models.Movie;
 
 /**
@@ -26,6 +24,7 @@ public class MovieDTO {
     public String overview;
 
     public float popularity;
+    public String title;
 
     public String getPosterPath() {
         return posterPath;
@@ -54,8 +53,6 @@ public class MovieDTO {
     public String getTitle() {
         return title;
     }
-
-    public String title;
 
     public Movie create() {
         return new Movie(releaseDate, posterPath, title, backdropPath, popularity, overview);
