@@ -1,8 +1,9 @@
 package cz.muni.fi.pv256.movio2.uco374585;
 
+import android.app.Fragment;
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.support.v4.content.res.ResourcesCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -87,6 +88,7 @@ public class MovieDetailFragment extends Fragment {
     }
 
     public void setResources(View view) {
+        movie = getArguments().getParcelable("movie");
         setImages(view);
         setTexts(view);
     }
@@ -97,5 +99,10 @@ public class MovieDetailFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_movie_detail, container, false);
         setResources(view);
         return view;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onDetach();
     }
 }

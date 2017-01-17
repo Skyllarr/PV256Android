@@ -1,7 +1,6 @@
 package cz.muni.fi.pv256.movio2.uco374585;
 
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Bundle;
@@ -24,8 +23,8 @@ import java.util.List;
 public class ListFragment extends Fragment {
 
     private static final String TAG = "ListFragment";
-    List<Movie> movies = new ArrayList<>();
-    private Movie movie;
+    private List<Movie> movies = new ArrayList<>();
+    private Fragment movieDetailFragment;
 
     public ListFragment() {
         // Required empty public constructor
@@ -37,7 +36,7 @@ public class ListFragment extends Fragment {
     }
 
     @Override
-    public void onAttach (Context context) {
+    public void onAttach(Context context) {
         Log.i(TAG, "ListFragment was attached to its context");
         super.onAttach(context);
     }
@@ -77,8 +76,7 @@ public class ListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.main_fragment, container, false);
-        return view;
+        return inflater.inflate(R.layout.main_fragment, container, false);
     }
 
     @Override
@@ -131,7 +129,7 @@ public class ListFragment extends Fragment {
         try {
             releaseDate = Formatter.parse(dateString);
         } catch (ParseException e) {
-            e.printStackTrace();
+            Log.e(TAG, "Release date could not be parsed");
         }
         return releaseDate.getTime();
     }
@@ -149,27 +147,26 @@ public class ListFragment extends Fragment {
     }
 
     private void showDetail(Movie movie) {
-        Fragment currentFragment = getActivity().getFragmentManager().findFragmentById(R.id.fragment_container);
-        if (currentFragment != null && currentFragment.getArguments() != null) {
-            Movie currentlyShownMovie = currentFragment.getArguments().getParcelable("movie");
-            if (currentlyShownMovie.getTitle() == movie.getTitle())
-                return;
-        }
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        Fragment fragment = new MovieDetailFragment();
+        if (movieDetailFragment == null) {
+            movieDetailFragment = MovieDetailFragment.newInstance(movie);
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("movie", movie);
+            movieDetailFragment.setArguments(bundle);
+        } else
+            movieDetailFragment.getArguments().putParcelable("movie", movie);
 
-        Bundle bundle = new Bundle();
-        bundle.putParcelable("movie", movie);
-        fragment.setArguments(bundle);
-
-        boolean tabletSize = getResources().getBoolean(R.bool.isTablet);
-        if (tabletSize) {
-            fragmentTransaction.replace(R.id.fragment_container, fragment);
+        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        if (getResources().getBoolean(R.bool.isTablet)) {
+            fragmentTransaction
+                    .detach(movieDetailFragment)
+                    .attach(movieDetailFragment)
+                    .replace(R.id.fragment_container, movieDetailFragment, "MovieDetailFragment")
+                    .commit();
         } else {
-            fragmentTransaction.replace(R.id.fragment_container, fragment);
+            fragmentTransaction
+                    .replace(R.id.fragment_container, movieDetailFragment, "MovieDetailFragment")
+                    .addToBackStack(null)
+                    .commit();
         }
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
     }
 }

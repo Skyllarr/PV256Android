@@ -1,13 +1,13 @@
 package cz.muni.fi.pv256.movio2.uco374585;
 
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,24 +17,20 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "ListFragment";
     private SharedPreferences mPrefs;
     private Boolean mDefaultTheme;
-    private FragmentManager manager;
-    private Fragment myFragment;
+    private Fragment activeFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTheme();
         setContentView(R.layout.activity_main);
-
         if (savedInstanceState == null) {
-            boolean tabletSize = getResources().getBoolean(R.bool.isTablet);
-            manager = getFragmentManager();
-            FragmentTransaction transaction = manager.beginTransaction();
-            myFragment = ListFragment.newInstance();
-            if (tabletSize) {
-                transaction.add(R.id.home_fragment, myFragment);
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            activeFragment = ListFragment.newInstance();
+            if (getResources().getBoolean(R.bool.isTablet)) {
+                transaction.add(R.id.home_fragment, activeFragment, "ListFragment");
             } else {
-                transaction.add(R.id.fragment_container, myFragment);
+                transaction.add(R.id.fragment_container, activeFragment, "ListFragment");
             }
             transaction.addToBackStack(null);
             transaction.commit();
@@ -42,38 +38,38 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStart(){
+    protected void onStart() {
         Log.i(TAG, "MainActivity is now becoming visible to the user");
         super.onStart();
     }
 
     @Override
-    protected void onRestart(){
+    protected void onRestart() {
         Log.i(TAG, "MainActivity Called after your activity has been stopped, prior to it being started again.");
         super.onRestart();
     }
 
     @Override
-    protected void onResume(){
+    protected void onResume() {
         Log.i(TAG, "MainActivity  start interacting with the user. " +
                 "At this point your activity is at the top of the activity stack, with user input going to it.");
         super.onResume();
     }
 
     @Override
-    protected void onPause(){
+    protected void onPause() {
         Log.i(TAG, "System is about to start resuming a previous activity.");
         super.onPause();
     }
 
     @Override
-    protected void onStop(){
+    protected void onStop() {
         Log.i(TAG, "MainActivity is no longer visible to the user");
         super.onStop();
     }
 
     @Override
-    protected void onDestroy(){
+    protected void onDestroy() {
         Log.i(TAG, "MainActivity will be destroyed now.");
         super.onDestroy();
     }
@@ -82,13 +78,11 @@ public class MainActivity extends AppCompatActivity {
     public void onSaveInstanceState(Bundle savedInstanceState) {
         mPrefs = this.getApplicationContext().getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
         savedInstanceState.putString("theme", "" + mPrefs.getBoolean("defaultTheme", true));
-        if (myFragment != null && myFragment.isAdded())
-            getFragmentManager().putFragment(savedInstanceState, "myfragment", myFragment);
         super.onSaveInstanceState(savedInstanceState);
     }
 
     public void onRestoreInstanceState(Bundle inState) {
-        myFragment = getFragmentManager().getFragment(inState, "myfragment");
+
     }
 
     @Override
@@ -104,12 +98,20 @@ public class MainActivity extends AppCompatActivity {
                 changeTheme();
                 return true;
             case R.id.action_home:
-                if (!getResources().getBoolean(R.bool.isTablet)) {
-                    FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                    myFragment = ListFragment.newInstance();
-                    transaction.replace(R.id.fragment_container, myFragment);
-                    transaction.addToBackStack(null);
-                    transaction.commit();
+                MovieDetailFragment movieDetailFragment =
+                        (MovieDetailFragment) getFragmentManager().findFragmentByTag("MovieDetailFragment");
+                if (!getResources().getBoolean(R.bool.isTablet) &&
+                        movieDetailFragment != null &&
+                        movieDetailFragment.isVisible()) {
+                    //empty backstack upon pressing home
+                    FragmentManager fm = getFragmentManager();
+                    for (int i = 0; i < fm.getBackStackEntryCount(); ++i) {
+                        fm.popBackStack();
+                    }
+                    fm.beginTransaction()
+                            .add(R.id.fragment_container, ListFragment.newInstance(), "ListFragment")
+                            .addToBackStack(null)
+                            .commit();
                 }
                 return true;
             default:
@@ -138,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
         mDefaultTheme = !mDefaultTheme;
         SharedPreferences.Editor editor = mPrefs.edit();
         editor.putBoolean("defaultTheme", mDefaultTheme);
-        editor.commit();
+        editor.apply();
         Intent intent = getIntent();
         finish();
         startActivity(intent);
