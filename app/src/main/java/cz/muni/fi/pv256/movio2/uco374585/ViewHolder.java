@@ -1,11 +1,9 @@
 package cz.muni.fi.pv256.movio2.uco374585;
 
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
-
-import java.util.List;
 
 /**
  * Created by Skylar on 12/29/2016.
