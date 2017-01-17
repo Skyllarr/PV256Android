@@ -13,12 +13,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+
 import cz.muni.fi.pv256.movio2.uco374585.Data.MovieDataSingleton;
 import cz.muni.fi.pv256.movio2.uco374585.Models.Movie;
+
 import static cz.muni.fi.pv256.movio2.uco374585.Api.ApiQuery.API_KEY;
 import static cz.muni.fi.pv256.movio2.uco374585.Api.ApiQuery.DISCOVER_URL;
 import static cz.muni.fi.pv256.movio2.uco374585.Api.ApiQuery.MOST_POPULAR_EVER_URL;
@@ -66,7 +66,8 @@ public class ListFragment extends Fragment {
         super.onCreate(savedInstanceState);
         try {
             if (isInternetAvailable() && MovieDataSingleton.getInstance().isEmpty()) {
-                MovieDataSingleton.getInstance().setMoviesThisWeek(new MovieDownloader().execute(DISCOVER_URL + THIS_WEEK_URL + API_KEY).get()); ;
+                MovieDataSingleton.getInstance().setMoviesThisWeek(new MovieDownloader().execute(DISCOVER_URL + THIS_WEEK_URL + API_KEY).get());
+                ;
                 MovieDataSingleton.getInstance().setMoviesPopularThisYear(new MovieDownloader().execute(DISCOVER_URL + MOST_POPULAR_THIS_YEAR_URL + API_KEY).get());
                 MovieDataSingleton.getInstance().setMoviesPopularAllTime(new MovieDownloader().execute(DISCOVER_URL + MOST_POPULAR_EVER_URL + API_KEY).get());
             }

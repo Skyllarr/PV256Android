@@ -9,6 +9,15 @@ import android.os.Parcelable;
 
 public class Movie implements Parcelable {
 
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+        public Movie createFromParcel(Parcel in) {
+            return new Movie(in);
+        }
+
+        public Movie[] newArray(int size) {
+            return new Movie[size];
+        }
+    };
     String title;
     String releaseDate;
     String coverPath;
@@ -67,16 +76,6 @@ public class Movie implements Parcelable {
         dest.writeFloat(this.popularity);
         dest.writeString(this.description);
     }
-
-    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
-        public Movie createFromParcel(Parcel in) {
-            return new Movie(in);
-        }
-
-        public Movie[] newArray(int size) {
-            return new Movie[size];
-        }
-    };
 
     @Override
     public int describeContents() {

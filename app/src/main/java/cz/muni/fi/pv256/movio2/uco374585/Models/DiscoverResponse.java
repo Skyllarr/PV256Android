@@ -3,6 +3,7 @@ package cz.muni.fi.pv256.movio2.uco374585.Models;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+
 import cz.muni.fi.pv256.movio2.uco374585.Api.ApiQuery;
 import cz.muni.fi.pv256.movio2.uco374585.Api.MovieDTO;
 
@@ -23,7 +24,7 @@ public class DiscoverResponse {
                 if (movie.getTitle() != null && movie.getBackdropPath() != null && movie.getPosterPath() != null) {
                     movie.setPosterPath(ApiQuery.IMAGE_URL + movie.getPosterPath().substring(1));
                     movie.setBackdropPath(ApiQuery.IMAGE_URL + movie.getBackdropPath().substring(1));
-                    BigDecimal popularity = new BigDecimal(Math.round(movie.getPopularity()*10.0)/10.0);
+                    BigDecimal popularity = new BigDecimal(Math.round(movie.getPopularity() * 10.0) / 10.0);
                     movie.setPopularity(popularity.floatValue());
                     movies.add(movie.create());
                 }

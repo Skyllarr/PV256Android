@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -55,16 +56,24 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
 
 
     public void setMovieImageWithBottomPanel(final ViewHolder holder, Movie movie) {
-        holder.imageView.setImageResource(R.drawable.loading);
+        //holder.imageView.setImageResource(R.drawable.loading);
+        /*RelativeLayout layout = new RelativeLayout(context);
+        final ProgressBar spinner = new ProgressBar(context, null, android.R.attr.progressBarStyleHorizontal);
+        spinner.setIndeterminate(true);
+        spinner.setVisibility(View.VISIBLE);
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(100,100);
+        params.addRule(RelativeLayout.CENTER_IN_PARENT);
+        layout.addView(spinner,params);*/
+        final ProgressBar spinner = (ProgressBar) holder.itemView.findViewById(R.id.spinner);
         imageLoader.displayImage(movie.getCoverPath(), holder.imageView, null, new ImageLoadingListener() {
             @Override
             public void onLoadingStarted(String imageUri, View view) {
-
+                spinner.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-
+                spinner.setVisibility(View.GONE);
             }
 
             @Override
@@ -81,6 +90,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
                     Palette.from(loadedImage).generate(listener);
                     holder.itemView.findViewById(R.id.movie_title).setAlpha(1);
                 }
+                spinner.setVisibility(View.GONE);
             }
 
             @Override
