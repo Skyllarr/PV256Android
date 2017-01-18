@@ -13,8 +13,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import cz.muni.fi.pv256.movio2.uco374585.Models.Movie;
 
 /**
@@ -24,7 +26,6 @@ import cz.muni.fi.pv256.movio2.uco374585.Models.Movie;
 public class ListFragment extends Fragment {
 
     private static final String TAG = "ListFragment";
-    private List<Movie> movies = new ArrayList<>();
     private Fragment movieDetailFragment;
     private List<Movie> moviesPopular = new ArrayList<>();
     private List<Movie> moviesThisWeek = new ArrayList<>();
@@ -45,7 +46,7 @@ public class ListFragment extends Fragment {
 
     public boolean isInternetAvailable() {
         ConnectivityManager cm =
-                (ConnectivityManager)getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+                (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
 
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         return activeNetwork != null && activeNetwork.isConnectedOrConnecting();

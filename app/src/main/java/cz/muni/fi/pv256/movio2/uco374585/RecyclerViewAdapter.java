@@ -65,20 +65,28 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     public void viewMovieDetailFragment(Movie movie) {
         FragmentManager fragmentManager = ((Activity) context).getFragmentManager();
-        Fragment currentFragment = fragmentManager.findFragmentById(R.id.fragment_container);
-        if (currentFragment != null && currentFragment.getArguments() != null) {
-            Movie currentlyShownMovie = currentFragment.getArguments().getParcelable("movie");
-            if (currentlyShownMovie.getTitle() == movie.getTitle())
-                return;
-        }
+        Fragment movieDetailFragment = fragmentManager.findFragmentByTag("MovieDetailFragment");
+        if (movieDetailFragment == null) {
+            movieDetailFragment = MovieDetailFragment.newInstance(movie);
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("movie", movie);
+            movieDetailFragment.setArguments(bundle);
+        } else
+            movieDetailFragment.getArguments().putParcelable("movie", movie);
+
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        Fragment fragment = new MovieDetailFragment();
-        Bundle bundle = new Bundle();
-        bundle.putParcelable("movie", movie);
-        fragment.setArguments(bundle);
-        fragmentTransaction.replace(R.id.fragment_container, fragment);
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
+        if (context.getResources().getBoolean(R.bool.isTablet)) {
+            fragmentTransaction
+                    .detach(movieDetailFragment)
+                    .attach(movieDetailFragment)
+                    .replace(R.id.fragment_container, movieDetailFragment, "MovieDetailFragment")
+                    .commit();
+        } else {
+            fragmentTransaction
+                    .replace(R.id.fragment_container, movieDetailFragment, "MovieDetailFragment")
+                    .addToBackStack(null)
+                    .commit();
+        }
     }
 
     @Override
