@@ -9,6 +9,7 @@ import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -49,7 +50,7 @@ public class TmdbPullService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent workIntent) {
-        String movieCategory = workIntent.getDataString();
+        ArrayList<String> categories = workIntent.getExtras().getStringArrayList("categories");
         Gson gson = new GsonBuilder()
                 .setLenient()
                 .create();
@@ -59,21 +60,23 @@ public class TmdbPullService extends IntentService {
                 .build();
         TmdbAPI tmdbAPI = rest.create(TmdbAPI.class);
 
-        Call<DiscoverResponse> call = fetchMoviesOfCategory(tmdbAPI, movieCategory);
-        retrofit2.Response<DiscoverResponse> response = null;
-        try {
-            response = call.execute();
-        } catch (IOException e) {
-            Log.e(TAG, "Failed to execute call for fetching movies");
+        for (String category : categories) {
+            Call<DiscoverResponse> call = fetchMoviesOfCategory(tmdbAPI, category);
+            retrofit2.Response<DiscoverResponse> response = null;
+            try {
+                response = call.execute();
+            } catch (IOException e) {
+                Log.e(TAG, "Failed to execute call for fetching movies");
+            }
+            DiscoverResponse movies = new DiscoverResponse();
+            if (response != null)
+                movies = response.body();
+            if (movies == null) {
+                Log.e(TAG, "Response returned with empty body");
+            }
+            List<Movie> loadedMovies = movies.createAndFilterListOfMovies();
+            saveMoviesOfCategory(loadedMovies, category);
         }
-        DiscoverResponse movies = new DiscoverResponse();
-        if (response != null)
-            movies = response.body();
-        if (movies == null) {
-            Log.e(TAG, "Response returned with empty body");
-        }
-        List<Movie> loadedMovies = movies.createAndFilterListOfMovies();
-        saveMoviesOfCategory(loadedMovies, movieCategory);
     }
 
     private Call<DiscoverResponse> fetchMoviesOfCategory(TmdbAPI tmdbAPI, String movieCategory) {
