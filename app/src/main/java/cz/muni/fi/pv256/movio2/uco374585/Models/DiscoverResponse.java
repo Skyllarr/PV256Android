@@ -3,7 +3,7 @@ package cz.muni.fi.pv256.movio2.uco374585.Models;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import cz.muni.fi.pv256.movio2.uco374585.Api.ApiQuery;
+
 import cz.muni.fi.pv256.movio2.uco374585.Api.MovieDTO;
 import cz.muni.fi.pv256.movio2.uco374585.Api.Query;
 

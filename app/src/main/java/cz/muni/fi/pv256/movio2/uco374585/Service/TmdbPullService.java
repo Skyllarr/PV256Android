@@ -51,6 +51,7 @@ public class TmdbPullService extends IntentService {
     @Override
     protected void onHandleIntent(Intent workIntent) {
         ArrayList<String> categories = workIntent.getExtras().getStringArrayList("categories");
+
         Gson gson = new GsonBuilder()
                 .setLenient()
                 .create();

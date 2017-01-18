@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,11 +19,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import cz.muni.fi.pv256.movio2.uco374585.Data.MovieDataSingleton;
 import cz.muni.fi.pv256.movio2.uco374585.Models.Movie;
 import cz.muni.fi.pv256.movio2.uco374585.Service.TmdbPullService;
@@ -75,7 +74,6 @@ public class ListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         if (isInternetAvailable() && MovieDataSingleton.getInstance().isEmpty()) {
             Intent mServiceIntent = new Intent(getActivity(), TmdbPullService.class);
             mServiceIntent.putStringArrayListExtra("categories",
