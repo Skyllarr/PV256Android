@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
-
 import cz.muni.fi.pv256.movio2.uco374585.Models.Movie;
 
 /**
