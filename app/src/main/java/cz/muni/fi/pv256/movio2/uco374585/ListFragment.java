@@ -92,6 +92,7 @@ public class ListFragment extends Fragment {
                         .appendQueryParameter("primary_release_date.lte", weekFromToday())
                         .appendQueryParameter("api_key", API_KEY);
                 String moviesThisWeekFetchMoviesUrl = builder.build().toString();
+
                 builder.clearQuery()
                         .appendQueryParameter("primary_release_year", "" + 2017)
                         .appendQueryParameter("sort_by", "popularity.desc").appendQueryParameter("api_key", API_KEY);
@@ -99,11 +100,12 @@ public class ListFragment extends Fragment {
                 builder.clearQuery()
                         .appendQueryParameter("sort_by", "vote_average.desc").appendQueryParameter("api_key", API_KEY);
                 String mostPopularAllTimeMoviesUrl = builder.build().toString();
+
                 String[] urls = new String[]{moviesThisWeekFetchMoviesUrl,
                         mostPopularThisYearFetchMoviesUrl,
                         mostPopularAllTimeMoviesUrl};
-                Map<String, List<Movie>> allMoviesMap;
-                allMoviesMap = new MovieDownloader().execute(urls).get();
+
+                Map<String, List<Movie>> allMoviesMap = new MovieDownloader().execute(urls).get();
                 MovieDataSingleton.getInstance().setMoviesThisWeek(allMoviesMap.get(moviesThisWeekFetchMoviesUrl));
                 MovieDataSingleton.getInstance().setMoviesPopularThisYear(allMoviesMap.get(mostPopularThisYearFetchMoviesUrl));
                 MovieDataSingleton.getInstance().setMoviesPopularAllTime(allMoviesMap.get(mostPopularAllTimeMoviesUrl));

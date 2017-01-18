@@ -56,24 +56,19 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
 
 
     public void setMovieImageWithBottomPanel(final ViewHolder holder, Movie movie) {
-        //holder.imageView.setImageResource(R.drawable.loading);
-        /*RelativeLayout layout = new RelativeLayout(context);
-        final ProgressBar spinner = new ProgressBar(context, null, android.R.attr.progressBarStyleHorizontal);
-        spinner.setIndeterminate(true);
-        spinner.setVisibility(View.VISIBLE);
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(100,100);
-        params.addRule(RelativeLayout.CENTER_IN_PARENT);
-        layout.addView(spinner,params);*/
         final ProgressBar spinner = (ProgressBar) holder.itemView.findViewById(R.id.spinner);
+        final ImageView star = (ImageView) holder.itemView.findViewById(R.id.rating);
         imageLoader.displayImage(movie.getCoverPath(), holder.imageView, null, new ImageLoadingListener() {
             @Override
             public void onLoadingStarted(String imageUri, View view) {
                 spinner.setVisibility(View.VISIBLE);
+                star.setVisibility(View.INVISIBLE);
             }
 
             @Override
             public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
                 spinner.setVisibility(View.GONE);
+                star.setVisibility(View.INVISIBLE);
             }
 
             @Override
@@ -91,6 +86,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
                     holder.itemView.findViewById(R.id.movie_title).setAlpha(1);
                 }
                 spinner.setVisibility(View.GONE);
+                star.setVisibility(View.VISIBLE);
             }
 
             @Override
@@ -153,16 +149,5 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
-    }
-
-    public void insert(int position, Movie movie) {
-        movies.add(position, movie);
-        notifyItemInserted(position);
-    }
-
-    public void remove(Movie movie) {
-        int position = movies.indexOf(movie);
-        movies.remove(position);
-        notifyItemRemoved(position);
     }
 }
