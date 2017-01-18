@@ -1,6 +1,7 @@
 package cz.muni.fi.pv256.movio2.uco374585.Data;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import cz.muni.fi.pv256.movio2.uco374585.Models.Movie;
@@ -52,7 +53,7 @@ public class MovieDataSingleton {
     }
 
     public boolean isEmpty() {
-        if (moviesPopularAllTime == null && moviesThisWeek == null && moviesPopularThisYear == null)
+        if (moviesPopularAllTime == null || moviesThisWeek == null || moviesPopularThisYear == null)
             return true;
         return (moviesPopularAllTime.size() == 0 &&
                 moviesPopularThisYear.size() == 0 &&
