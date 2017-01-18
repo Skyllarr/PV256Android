@@ -35,7 +35,6 @@ import static cz.muni.fi.pv256.movio2.uco374585.Api.ApiQuery.TMDB_URL;
 public class ListFragment extends Fragment {
 
     private static final String TAG = "ListFragment";
-    private Fragment movieDetailFragment;
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
     private RecyclerView.Adapter mAdapter;

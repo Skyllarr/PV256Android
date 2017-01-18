@@ -36,11 +36,11 @@
             android:layout_height="30dp"
             android:layout_alignBottom="@+id/imageView">
 
-        <ImageView
-            android:id="@+id/movie_bottom_panel"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:alpha="0.3" />
+            <ImageView
+                android:id="@+id/movie_bottom_panel"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:alpha="0.3" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
