@@ -1,5 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+
     android:id="@+id/main_fragment"
     style="@style/Theme.AppCompat.Light.NoActionBar"
     android:layout_width="match_parent"
@@ -23,8 +24,9 @@
                 android:id="@+id/category1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingBottom="5dp"
                 android:paddingLeft="10dp"
-                android:paddingTop="10dp"
+                android:paddingTop="5dp"
                 android:text="@string/category1"
                 android:textColor="#757575"
                 android:textSize="22dp" />
@@ -32,14 +34,16 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recycler_view_movies_category1"
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
+                android:layout_height="150dp"
                 android:scrollbars="vertical" />
 
             <TextView
                 android:id="@+id/category2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingBottom="5dp"
                 android:paddingLeft="10dp"
+                android:paddingTop="5dp"
                 android:text="@string/category2"
                 android:textColor="#757575"
                 android:textSize="22dp" />
@@ -47,14 +51,16 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recycler_view_movies_category2"
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
+                android:layout_height="150dp"
                 android:scrollbars="vertical" />
 
             <TextView
                 android:id="@+id/category3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingBottom="5dp"
                 android:paddingLeft="10dp"
+                android:paddingTop="5dp"
                 android:text="@string/category3"
                 android:textColor="#757575"
                 android:textSize="22dp" />
@@ -62,7 +68,7 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recycler_view_movies_category3"
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
+                android:layout_height="150dp"
                 android:scrollbars="vertical" />
         </LinearLayout>
     </ScrollView>

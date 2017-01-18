@@ -3,18 +3,30 @@ package cz.muni.fi.pv256.movio2.uco374585;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-
-import java.text.ParseException;
+import android.widget.TextView;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ExecutionException;
+
+import cz.muni.fi.pv256.movio2.uco374585.Data.MovieDataSingleton;
+import cz.muni.fi.pv256.movio2.uco374585.Models.Movie;
+
+import static cz.muni.fi.pv256.movio2.uco374585.Api.ApiQuery.API_KEY;
+import static cz.muni.fi.pv256.movio2.uco374585.Api.ApiQuery.TMDB_URL;
 
 /**
  * Created by Skylar on 12/27/2016.
@@ -23,8 +35,9 @@ import java.util.List;
 public class ListFragment extends Fragment {
 
     private static final String TAG = "ListFragment";
-    private List<Movie> movies = new ArrayList<>();
-    private Fragment movieDetailFragment;
+    private RecyclerView mRecyclerView;
+    private RecyclerView.LayoutManager mLayoutManager;
+    private RecyclerView.Adapter mAdapter;
 
     public ListFragment() {
         // Required empty public constructor
@@ -33,6 +46,25 @@ public class ListFragment extends Fragment {
     public static ListFragment newInstance() {
         ListFragment fragment = new ListFragment();
         return fragment;
+    }
+
+    public boolean isInternetAvailable() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+    }
+
+
+    private static String todayDate() {
+        return new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+    }
+
+    private static String weekFromToday() {
+        Calendar calendar = new GregorianCalendar();
+        calendar.add(Calendar.DATE, 7);
+        return new SimpleDateFormat("yyyy-MM-dd").format(calendar.getTime());
     }
 
     @Override
@@ -44,7 +76,45 @@ public class ListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        createFakeMoviesData();
+        loadAndStoreMovies();
+    }
+
+    public void loadAndStoreMovies() {
+        try {
+            if (isInternetAvailable() && MovieDataSingleton.getInstance().isEmpty()) {
+                Uri.Builder builder = new Uri.Builder();
+                builder.scheme("https")
+                        .authority(TMDB_URL)
+                        .appendPath("3")
+                        .appendPath("discover")
+                        .appendPath("movie")
+                        .appendQueryParameter("primary_release_date.gte", todayDate())
+                        .appendQueryParameter("primary_release_date.lte", weekFromToday())
+                        .appendQueryParameter("api_key", API_KEY);
+                String moviesThisWeekFetchMoviesUrl = builder.build().toString();
+
+                builder.clearQuery()
+                        .appendQueryParameter("primary_release_year", "" + 2017)
+                        .appendQueryParameter("sort_by", "popularity.desc").appendQueryParameter("api_key", API_KEY);
+                String mostPopularThisYearFetchMoviesUrl = builder.build().toString();
+                builder.clearQuery()
+                        .appendQueryParameter("sort_by", "vote_average.desc").appendQueryParameter("api_key", API_KEY);
+                String mostPopularAllTimeMoviesUrl = builder.build().toString();
+
+                String[] urls = new String[]{moviesThisWeekFetchMoviesUrl,
+                        mostPopularThisYearFetchMoviesUrl,
+                        mostPopularAllTimeMoviesUrl};
+
+                Map<String, List<Movie>> allMoviesMap = new MovieDownloader().execute(urls).get();
+                MovieDataSingleton.getInstance().setMoviesThisWeek(allMoviesMap.get(moviesThisWeekFetchMoviesUrl));
+                MovieDataSingleton.getInstance().setMoviesPopularThisYear(allMoviesMap.get(mostPopularThisYearFetchMoviesUrl));
+                MovieDataSingleton.getInstance().setMoviesPopularAllTime(allMoviesMap.get(mostPopularAllTimeMoviesUrl));
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -76,32 +146,37 @@ public class ListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.main_fragment, container, false);
+        if (MovieDataSingleton.getInstance().isEmpty()) {
+            View view = inflater.inflate(R.layout.no_data_screen, container, false);
+            if (!isInternetAvailable()) {
+                TextView noConnection = (TextView) view.findViewById(R.id.no_internet_connection);
+                noConnection.setVisibility(View.VISIBLE);
+            }
+            return view;
+        } else {
+            View view = inflater.inflate(R.layout.main_fragment, container, false);
+            return view;
+        }
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        Button mClickButton1 = (Button) view.findViewById(R.id.miss_button);
-        mClickButton1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDetail(movies.get(0));
-            }
-        });
-        Button mClickButton2 = (Button) view.findViewById(R.id.deepwater_button);
-        mClickButton2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDetail(movies.get(1));
-            }
-        });
-        Button mClickButton3 = (Button) view.findViewById(R.id.rings_button);
-        mClickButton3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDetail(movies.get(2));
-            }
-        });
+        if (!MovieDataSingleton.getInstance().isEmpty()) {
+            fillRecyclerView(view, R.id.recycler_view_movies_category1, MovieDataSingleton.getInstance().getMoviesThisWeek());
+            fillRecyclerView(view, R.id.recycler_view_movies_category2, MovieDataSingleton.getInstance().getMoviesPopularThisYear());
+            fillRecyclerView(view, R.id.recycler_view_movies_category3, MovieDataSingleton.getInstance().getMoviesPopularAllTime());
+        }
+    }
+
+    private void fillRecyclerView(View view, int id, List<Movie> movies) {
+        if (movies != null && movies.size() != 0) {
+            mRecyclerView = (RecyclerView) view.findViewById(id);
+            mRecyclerView.setHasFixedSize(true);
+            mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+            mRecyclerView.setLayoutManager(mLayoutManager);
+            mAdapter = new RecyclerViewAdapter(movies, getActivity());
+            mRecyclerView.setAdapter(mAdapter);
+        }
     }
 
     @Override
@@ -121,52 +196,5 @@ public class ListFragment extends Fragment {
     public void onDetach() {
         Log.i(TAG, "ListFragment is being detached from activity");
         super.onDetach();
-    }
-
-    private long convertDateToLong(String dateString) {
-        SimpleDateFormat Formatter = new SimpleDateFormat("yyyy/MM/dd");
-        Date releaseDate = new Date();
-        try {
-            releaseDate = Formatter.parse(dateString);
-        } catch (ParseException e) {
-            Log.e(TAG, "Release date could not be parsed");
-        }
-        return releaseDate.getTime();
-    }
-
-    private void createFakeMoviesData() {
-        Movie rings = new Movie(convertDateToLong("2016/02/02"), "R.drawable.rings", "Rings", "R.drawable.rings_backdrop", 85f, "OVERVIEW \n\nTwo high school students, Katie Embry and Becca Kotler, have a sleepover and discuss the urban legend of a cursed videotape that will kill anyone seven days after watching it. Katie reveals that she watched the said tape with her boyfriend and two other friends last week but Becca assumes that she is trying to prank her. At 10 PM, Katie goes downstairs where she witnesses several supernatural occurrences, such as the TV turning on by itself. Frightened, she calls out to Becca but hears no response.");
-        Movie miss = new Movie(convertDateToLong("2016/09/29"), "R.drawable.miss_peregrines_home_for_peculiar_children", "Miss Peregrine's home for peculiar children",
-                "R.drawable.miss_peregrines_home_for_peculiar_children_backdrop", 75f, "OVERVIEW \n\nMiss Peregrine's Home for Peculiar Children is the debut novel by American author Ransom Riggs. It is a story of a boy who, following a horrific family tragedy, follows clues that take him to an abandoned children's home on a Welsh island.");
-        Movie deepWater = new Movie(convertDateToLong("2016/09/29"), "R.drawable.deepwater_horizon", "Deepwater",
-                "R.drawable.deepwater_horizon_backdrop", 65f, "OVERVIEW \n\nOn April 20, 2010, Deepwater Horizon, an oil drilling ship operated by private contractor Transocean, is set to begin drilling off the southern coast of Louisiana on behalf of BP. Crew members Michael Mike Williams (Mark Wahlberg) and his superior, James Jimmy Harrell (Kurt Russell), are surprised to learn that the workers assigned to pour the concrete foundation intended to keep the well stable are being sent home early without conducting a pressure test, at the insistence of BP liaison Donald Vidrine (John Malkovich).");
-
-        movies.add(miss);
-        movies.add(deepWater);
-        movies.add(rings);
-    }
-
-    private void showDetail(Movie movie) {
-        if (movieDetailFragment == null) {
-            movieDetailFragment = MovieDetailFragment.newInstance(movie);
-            Bundle bundle = new Bundle();
-            bundle.putParcelable("movie", movie);
-            movieDetailFragment.setArguments(bundle);
-        } else
-            movieDetailFragment.getArguments().putParcelable("movie", movie);
-
-        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-        if (getResources().getBoolean(R.bool.isTablet)) {
-            fragmentTransaction
-                    .detach(movieDetailFragment)
-                    .attach(movieDetailFragment)
-                    .replace(R.id.fragment_container, movieDetailFragment, "MovieDetailFragment")
-                    .commit();
-        } else {
-            fragmentTransaction
-                    .replace(R.id.fragment_container, movieDetailFragment, "MovieDetailFragment")
-                    .addToBackStack(null)
-                    .commit();
-        }
     }
 }
