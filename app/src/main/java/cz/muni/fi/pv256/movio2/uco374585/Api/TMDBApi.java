@@ -13,15 +13,15 @@ public interface TmdbAPI {
 
     @GET("movie")
     Call<DiscoverResponse> loadMoviesFromDateToDate(@Query("primary_release_date.gte") String dateFrom,
-                                              @Query("primary_release_date.lte") String dateTo,
-                                              @Query("api_key") String apiKey);
+                                                    @Query("primary_release_date.lte") String dateTo,
+                                                    @Query("api_key") String apiKey);
 
     @GET("movie")
     Call<DiscoverResponse> loadMoviesOfYearSortedBy(@Query("primary_release_year") int year,
-                                                   @Query("sort_by") String sortBy,
-                                                   @Query("api_key") String apiKey);
+                                                    @Query("sort_by") String sortBy,
+                                                    @Query("api_key") String apiKey);
 
     @GET("movie")
     Call<DiscoverResponse> loadMoviesAllTimeSortBy(@Query("sort_by") String sortBy,
-                                                        @Query("api_key") String apiKey);
+                                                   @Query("api_key") String apiKey);
 }

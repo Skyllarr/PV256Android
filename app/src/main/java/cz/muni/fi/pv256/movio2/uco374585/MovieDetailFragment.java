@@ -2,8 +2,8 @@ package cz.muni.fi.pv256.movio2.uco374585;
 
 import android.app.Fragment;
 import android.content.Context;
-import android.os.Bundle;
 import android.graphics.Bitmap;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,7 +59,7 @@ public class MovieDetailFragment extends Fragment {
 
                     @Override
                     public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-                        spinnerCover.setVisibility(View.GONE);
+                        spinnerCover.setVisibility(View.VISIBLE);
                     }
 
                     @Override

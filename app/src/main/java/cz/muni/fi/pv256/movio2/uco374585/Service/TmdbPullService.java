@@ -1,7 +1,10 @@
 package cz.muni.fi.pv256.movio2.uco374585.Service;
 
 import android.app.IntentService;
+import android.app.NotificationManager;
 import android.content.Intent;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -20,6 +23,7 @@ import cz.muni.fi.pv256.movio2.uco374585.Api.TmdbAPI;
 import cz.muni.fi.pv256.movio2.uco374585.Data.MovieDataSingleton;
 import cz.muni.fi.pv256.movio2.uco374585.Models.DiscoverResponse;
 import cz.muni.fi.pv256.movio2.uco374585.Models.Movie;
+import cz.muni.fi.pv256.movio2.uco374585.R;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -32,7 +36,10 @@ import static cz.muni.fi.pv256.movio2.uco374585.Api.Query.DISCOVER_URL;
 
 public class TmdbPullService extends IntentService {
 
+    static final public String TMDB_RESULT = "REQUEST_PROCESSED";
+    static final public String TMDB_MESSAGE = "TMDB_MSG";
     private static final String TAG = "TmdbPullService";
+    private LocalBroadcastManager broadcaster;
 
     public TmdbPullService() {
         super("TmdbPullService");
@@ -48,10 +55,54 @@ public class TmdbPullService extends IntentService {
         return new SimpleDateFormat("yyyy-MM-dd").format(calendar.getTime());
     }
 
+    public void sendResult(String message) {
+        Intent intent = new Intent(TMDB_RESULT);
+        if (message != null)
+            intent.putExtra(TMDB_MESSAGE, message);
+        broadcaster.sendBroadcast(intent);
+    }
+
+    public void onCreate() {
+        super.onCreate();
+        broadcaster = LocalBroadcastManager.getInstance(this);
+    }
+
+    private void FetchAndstoreFromAPI(List<String> categories,
+                                      TmdbAPI tmdbAPI,
+                                      NotificationCompat.Builder mBuilder,
+                                      NotificationManager mNotifyMgr) {
+
+        for (String category : categories) {
+            Call<DiscoverResponse> call = fetchMoviesOfCategory(tmdbAPI, category);
+            retrofit2.Response<DiscoverResponse> response = null;
+            try {
+                response = call.execute();
+            } catch (IOException e) {
+                mNotifyMgr.notify(NotificationConstants.failedToExecuteNotifId, mBuilder.build());
+            }
+            DiscoverResponse movies = new DiscoverResponse();
+            if (response != null)
+                movies = response.body();
+            if (movies == null) {
+                mNotifyMgr.notify(NotificationConstants.failedToParseNotifId, mBuilder.build());
+            }
+            List<Movie> loadedMovies = movies.createAndFilterListOfMovies();
+            saveMoviesOfCategory(loadedMovies, category);
+        }
+    }
+
     @Override
     protected void onHandleIntent(Intent workIntent) {
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(this)
+                        .setSmallIcon(R.drawable.ic_info_black_24dp)
+                        .setContentTitle("Downloading")
+                        .setContentText("Loading movies");
+        NotificationManager mNotifyMgr =
+                (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        mNotifyMgr.cancel(NotificationConstants.noConnectionNotifId);
+        mNotifyMgr.notify(NotificationConstants.downloadingNotifId, mBuilder.build());
         ArrayList<String> categories = workIntent.getExtras().getStringArrayList("categories");
-
         Gson gson = new GsonBuilder()
                 .setLenient()
                 .create();
@@ -61,23 +112,9 @@ public class TmdbPullService extends IntentService {
                 .build();
         TmdbAPI tmdbAPI = rest.create(TmdbAPI.class);
 
-        for (String category : categories) {
-            Call<DiscoverResponse> call = fetchMoviesOfCategory(tmdbAPI, category);
-            retrofit2.Response<DiscoverResponse> response = null;
-            try {
-                response = call.execute();
-            } catch (IOException e) {
-                Log.e(TAG, "Failed to execute call for fetching movies");
-            }
-            DiscoverResponse movies = new DiscoverResponse();
-            if (response != null)
-                movies = response.body();
-            if (movies == null) {
-                Log.e(TAG, "Response returned with empty body");
-            }
-            List<Movie> loadedMovies = movies.createAndFilterListOfMovies();
-            saveMoviesOfCategory(loadedMovies, category);
-        }
+        FetchAndstoreFromAPI(categories, tmdbAPI, mBuilder, mNotifyMgr);
+        sendResult("FINISHED");
+        mNotifyMgr.cancel(NotificationConstants.downloadingNotifId);
     }
 
     private Call<DiscoverResponse> fetchMoviesOfCategory(TmdbAPI tmdbAPI, String movieCategory) {

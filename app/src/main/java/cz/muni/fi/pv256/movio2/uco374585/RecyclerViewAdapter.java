@@ -67,7 +67,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
 
             @Override
             public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-                spinner.setVisibility(View.GONE);
+                spinner.setVisibility(View.VISIBLE);
                 star.setVisibility(View.INVISIBLE);
             }
 

@@ -27,6 +27,11 @@
         <service
             android:name=".Service.TmdbPullService"
             android:exported="false"/>
+        <receiver android:name=".Service.InternetConnectionReceiver" >
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

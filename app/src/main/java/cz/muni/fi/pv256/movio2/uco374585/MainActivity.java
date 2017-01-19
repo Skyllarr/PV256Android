@@ -103,7 +103,6 @@ public class MainActivity extends AppCompatActivity {
                 if (!getResources().getBoolean(R.bool.isTablet) &&
                         movieDetailFragment != null &&
                         movieDetailFragment.isVisible()) {
-                    //empty backstack upon pressing home
                     FragmentManager fm = getFragmentManager();
                     for (int i = 0; i < fm.getBackStackEntryCount(); ++i) {
                         fm.popBackStack();
