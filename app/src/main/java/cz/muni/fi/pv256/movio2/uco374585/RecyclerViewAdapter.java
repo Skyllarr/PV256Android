@@ -1,12 +1,13 @@
 package cz.muni.fi.pv256.movio2.uco374585;
 
-import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.annotation.UiThread;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -22,20 +23,20 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 
 import cz.muni.fi.pv256.movio2.uco374585.Models.Movie;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
 
-    List<Movie> movies = Collections.emptyList();
+    List<Movie> movies = new ArrayList<>();
     View view;
     Context context;
     ImageLoader imageLoader;
 
     public RecyclerViewAdapter(List<Movie> movies, Context context) {
-        this.movies = movies;
+        this.movies.addAll(movies);
         this.context = context;
         DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
                 .cacheInMemory(true)
@@ -103,22 +104,23 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
     }
 
     public void viewMovieDetailFragment(Movie movie) {
-        FragmentManager fragmentManager = ((Activity) context).getFragmentManager();
+        FragmentManager fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
         Fragment movieDetailFragment = fragmentManager.findFragmentByTag("MovieDetailFragment");
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         if (movieDetailFragment == null) {
             movieDetailFragment = MovieDetailFragment.newInstance(movie);
             Bundle bundle = new Bundle();
             bundle.putParcelable("movie", movie);
             movieDetailFragment.setArguments(bundle);
-        } else
+            fragmentTransaction.replace(R.id.fragment_container, movieDetailFragment, "MovieDetailFragment");
+        } else {
             movieDetailFragment.getArguments().putParcelable("movie", movie);
+        }
 
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         if (context.getResources().getBoolean(R.bool.isTablet)) {
             fragmentTransaction
                     .detach(movieDetailFragment)
                     .attach(movieDetailFragment)
-                    .replace(R.id.fragment_container, movieDetailFragment, "MovieDetailFragment")
                     .commit();
         } else {
             fragmentTransaction
@@ -149,5 +151,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
+    }
+
+    @UiThread
+    public void updateList(List<Movie> newData) {
+        movies.clear();
+        movies.addAll(newData);
+        notifyDataSetChanged();
+    }
+
+    public List<Movie> getData() {
+        return movies;
     }
 }

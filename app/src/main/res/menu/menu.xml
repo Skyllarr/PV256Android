@@ -1,17 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/toolbar_menu">
 
     <item
         android:id="@+id/action_home"
         android:enabled="true"
         android:icon="@drawable/ic_action_home"
-        android:title="Home"
-        app:showAsAction="ifRoom"></item>
+        android:title="@string/home"
+        app:showAsAction="ifRoom" />
+
+    <group android:id="@+id/group_selected">
+        <item
+            android:id="@+id/favourites"
+            android:title="Favourites" />
+        <item
+            android:id="@+id/discover"
+            android:title="Discover" />
+    </group>
     <item
         android:id="@+id/action_refresh"
-        android:enabled="true"
-        android:icon="@drawable/ic_action_refresh"
-        android:title="Refresh"
-        app:showAsAction="ifRoom"></item>
+        android:title="Change theme" />
+
 </menu>

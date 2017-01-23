@@ -128,7 +128,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:clickable="false"
-        android:src="@drawable/ic_action_favorite"
+        android:src="@drawable/ic_rating_star"
         app:layout_anchor="@id/viewA"
         app:layout_anchorGravity="bottom|right|end" />
 </android.support.design.widget.CoordinatorLayout>

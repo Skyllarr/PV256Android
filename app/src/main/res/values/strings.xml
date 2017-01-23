@@ -6,4 +6,8 @@
     <string name="category3">Most popular of all times</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="movie_title">Movie Title</string>
+    <string name="home">Home</string>
+    <string name="refresh">Refresh</string>
+    <string name="stored">Stored</string>
+    <string name="checkable">Favourites</string>
 </resources>

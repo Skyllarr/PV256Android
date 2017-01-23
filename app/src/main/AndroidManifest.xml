@@ -32,6 +32,10 @@
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
+        <provider
+            android:name=".Data.MovieProvider"
+            android:authorities="cz.muni.fi.pv256.movio2.uco374585"
+            android:exported="false"/>
     </application>
 
 </manifest>

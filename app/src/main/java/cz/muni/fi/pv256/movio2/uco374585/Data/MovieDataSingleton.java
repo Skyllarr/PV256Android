@@ -12,9 +12,9 @@ import cz.muni.fi.pv256.movio2.uco374585.Models.Movie;
 public class MovieDataSingleton {
 
     private static MovieDataSingleton instance;
-    List<Movie> moviesThisWeek = new ArrayList<>();
-    List<Movie> moviesPopularThisYear = new ArrayList<>();
-    List<Movie> moviesPopularAllTime = new ArrayList<>();
+    private List<Movie> moviesThisWeek = new ArrayList<>();
+    private List<Movie> moviesPopularThisYear = new ArrayList<>();
+    private List<Movie> moviesPopularAllTime = new ArrayList<>();
 
     private MovieDataSingleton() {
         // Constructor hidden because this is a singleton
@@ -52,10 +52,9 @@ public class MovieDataSingleton {
     }
 
     public boolean isEmpty() {
-        if (moviesPopularAllTime == null || moviesThisWeek == null || moviesPopularThisYear == null)
-            return true;
-        return (moviesPopularAllTime.size() == 0 &&
-                moviesPopularThisYear.size() == 0 &&
-                moviesThisWeek.size() == 0);
+        return moviesPopularAllTime == null ||
+                moviesThisWeek == null ||
+                moviesPopularThisYear == null ||
+                (moviesPopularAllTime.size() == 0 && moviesPopularThisYear.size() == 0 && moviesThisWeek.size() == 0);
     }
 }

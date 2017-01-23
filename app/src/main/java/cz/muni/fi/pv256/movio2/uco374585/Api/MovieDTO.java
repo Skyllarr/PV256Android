@@ -10,21 +10,28 @@ import cz.muni.fi.pv256.movio2.uco374585.Models.Movie;
 
 public class MovieDTO {
 
-    public long id;
 
+    @SerializedName("id")
+    public Long id;
     @SerializedName("poster_path")
     public String posterPath;
-
     @SerializedName("release_date")
     public String releaseDate;
-
     @SerializedName("backdrop_path")
     public String backdropPath;
-
+    @SerializedName("vote_average")
+    public float voteAverage;
     public String overview;
-
     public float popularity;
     public String title;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getPosterPath() {
         return posterPath;
@@ -50,11 +57,19 @@ public class MovieDTO {
         this.popularity = popularity;
     }
 
+    public float getVoteAverage() {
+        return voteAverage;
+    }
+
+    public void setVoteAverage(float voteAverage) {
+        this.voteAverage = voteAverage;
+    }
+
     public String getTitle() {
         return title;
     }
 
     public Movie create() {
-        return new Movie(releaseDate, posterPath, title, backdropPath, popularity, overview);
+        return new Movie(id, releaseDate, posterPath, title, backdropPath, popularity, voteAverage, overview);
     }
 }
