@@ -6,8 +6,6 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -24,22 +22,15 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
-import java.util.List;
-
-import cz.muni.fi.pv256.movio2.uco374585.database.loaders.MovieCreateDbLoader;
-import cz.muni.fi.pv256.movio2.uco374585.database.loaders.MovieDeleteDbLoader;
-import cz.muni.fi.pv256.movio2.uco374585.database.loaders.MovieFindDbLoader;
 import cz.muni.fi.pv256.movio2.uco374585.database.MovieManager;
 import cz.muni.fi.pv256.movio2.uco374585.model.Movie;
-import cz.muni.fi.pv256.movio2.uco374585.ui.MovieDbCallbackPresenter;
+import cz.muni.fi.pv256.movio2.uco374585.presenters.MovieDbCallbackPresenter;
 
 import static cz.muni.fi.pv256.movio2.uco374585.utils.Constants.LOADER_CREATE_MOVIE_ID;
 import static cz.muni.fi.pv256.movio2.uco374585.utils.Constants.LOADER_DELETE_MOVIE_ID;
 import static cz.muni.fi.pv256.movio2.uco374585.utils.Constants.LOADER_SWAP_FAVOURITE_VALUE_OF_MOVIE_ID;
 
 public class MovieDetailFragment extends Fragment {
-
-
     private static final String TAG = "MovieDetailFragment";
     public static MovieDetailFragment instance;
     ImageLoader imageLoader;
@@ -155,7 +146,12 @@ public class MovieDetailFragment extends Fragment {
                 Bundle args = new Bundle();
                 args.putLong("id", movie.getId());
                 if (getLoaderManager().getLoader(LOADER_SWAP_FAVOURITE_VALUE_OF_MOVIE_ID) == null) {
-                    getLoaderManager().initLoader(LOADER_SWAP_FAVOURITE_VALUE_OF_MOVIE_ID, args, new MovieDbCallbackPresenter(getActivity().getApplicationContext())).forceLoad();
+                    getLoaderManager().initLoader(LOADER_SWAP_FAVOURITE_VALUE_OF_MOVIE_ID, args, new MovieDbCallbackPresenter(
+                            getActivity().getApplicationContext(),
+                            getLoaderManager(),
+                            movie,
+                            MovieDetailFragment.getInstance()
+                            )).forceLoad();
                 } else {
                     getLoaderManager().restartLoader(LOADER_SWAP_FAVOURITE_VALUE_OF_MOVIE_ID, args, new MovieDbCallbackPresenter(getActivity().getApplicationContext())).forceLoad();
                 }

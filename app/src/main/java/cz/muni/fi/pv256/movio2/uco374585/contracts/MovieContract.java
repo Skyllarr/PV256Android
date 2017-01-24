@@ -1,4 +1,4 @@
-package cz.muni.fi.pv256.movio2.uco374585.viewcontract;
+package cz.muni.fi.pv256.movio2.uco374585.contracts;
 
 import android.support.annotation.NonNull;
 

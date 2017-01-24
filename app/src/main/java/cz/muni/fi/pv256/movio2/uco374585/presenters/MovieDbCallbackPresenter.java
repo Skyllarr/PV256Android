@@ -1,4 +1,4 @@
-package cz.muni.fi.pv256.movio2.uco374585.ui;
+package cz.muni.fi.pv256.movio2.uco374585.presenters;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -33,7 +33,7 @@ public class MovieDbCallbackPresenter implements LoaderManager.LoaderCallbacks<L
     private LoaderManager loaderManager;
     private Movie movie;
 
-    MovieDbCallbackPresenter(Context context, LoaderManager loaderManager, Movie movie, MovieDetailFragment fragment) {
+    public MovieDbCallbackPresenter(Context context, LoaderManager loaderManager, Movie movie, MovieDetailFragment fragment) {
         mContext = context;
         this.loaderManager = loaderManager;
         this.movie = movie;
