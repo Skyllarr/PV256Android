@@ -1,8 +1,8 @@
-package cz.muni.fi.pv256.movio2.uco374585.Api;
+package cz.muni.fi.pv256.movio2.uco374585.api;
 
 import com.google.gson.annotations.SerializedName;
 
-import cz.muni.fi.pv256.movio2.uco374585.Models.Movie;
+import cz.muni.fi.pv256.movio2.uco374585.model.Movie;
 
 /**
  * Created by Skylar on 1/15/2017.

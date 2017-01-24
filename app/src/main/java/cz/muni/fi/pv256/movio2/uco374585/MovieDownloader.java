@@ -8,8 +8,8 @@ import com.google.gson.Gson;
 import java.util.HashMap;
 import java.util.List;
 
-import cz.muni.fi.pv256.movio2.uco374585.Models.DiscoverResponse;
-import cz.muni.fi.pv256.movio2.uco374585.Models.Movie;
+import cz.muni.fi.pv256.movio2.uco374585.model.DiscoverResponse;
+import cz.muni.fi.pv256.movio2.uco374585.model.Movie;
 import okhttp3.Call;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;

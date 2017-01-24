@@ -26,11 +26,11 @@ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 import java.util.List;
 
-import cz.muni.fi.pv256.movio2.uco374585.Data.Loaders.MovieCreateDbLoader;
-import cz.muni.fi.pv256.movio2.uco374585.Data.Loaders.MovieDeleteDbLoader;
-import cz.muni.fi.pv256.movio2.uco374585.Data.Loaders.MovieFindDbLoader;
-import cz.muni.fi.pv256.movio2.uco374585.Data.MovieManager;
-import cz.muni.fi.pv256.movio2.uco374585.Models.Movie;
+import cz.muni.fi.pv256.movio2.uco374585.database.loaders.MovieCreateDbLoader;
+import cz.muni.fi.pv256.movio2.uco374585.database.loaders.MovieDeleteDbLoader;
+import cz.muni.fi.pv256.movio2.uco374585.database.loaders.MovieFindDbLoader;
+import cz.muni.fi.pv256.movio2.uco374585.database.MovieManager;
+import cz.muni.fi.pv256.movio2.uco374585.model.Movie;
 
 public class MovieDetailFragment extends Fragment {
 

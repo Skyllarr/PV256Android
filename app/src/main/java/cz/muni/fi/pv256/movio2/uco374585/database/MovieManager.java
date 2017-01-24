@@ -1,4 +1,4 @@
-package cz.muni.fi.pv256.movio2.uco374585.Data;
+package cz.muni.fi.pv256.movio2.uco374585.database;
 
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import cz.muni.fi.pv256.movio2.uco374585.Models.Movie;
+import cz.muni.fi.pv256.movio2.uco374585.model.Movie;
 
 /**
  * Created by Skylar on 1/19/2017.

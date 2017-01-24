@@ -1,11 +1,11 @@
-package cz.muni.fi.pv256.movio2.uco374585.Models;
+package cz.muni.fi.pv256.movio2.uco374585.model;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import cz.muni.fi.pv256.movio2.uco374585.Api.MovieDTO;
-import cz.muni.fi.pv256.movio2.uco374585.Api.Query;
+import cz.muni.fi.pv256.movio2.uco374585.api.MovieDTO;
+import cz.muni.fi.pv256.movio2.uco374585.api.Query;
 
 /**
  * Created by Skylar on 1/15/2017.

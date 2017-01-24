@@ -26,16 +26,15 @@ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import cz.muni.fi.pv256.movio2.uco374585.Models.Movie;
+import cz.muni.fi.pv256.movio2.uco374585.model.Movie;
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
+class RecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
 
-    List<Movie> movies = new ArrayList<>();
-    View view;
-    Context context;
-    ImageLoader imageLoader;
+    private List<Movie> movies = new ArrayList<>();
+    private Context context;
+    private ImageLoader imageLoader;
 
-    public RecyclerViewAdapter(List<Movie> movies, Context context) {
+    RecyclerViewAdapter(List<Movie> movies, Context context) {
         this.movies.addAll(movies);
         this.context = context;
         DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
@@ -51,12 +50,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_movie_layout, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_movie_layout, parent, false);
         return new ViewHolder(view);
     }
 
 
-    public void setMovieImageWithBottomPanel(final ViewHolder holder, Movie movie) {
+    private void setMovieImageWithBottomPanel(final ViewHolder holder, Movie movie) {
         final ProgressBar spinner = (ProgressBar) holder.itemView.findViewById(R.id.spinner);
         final ImageView star = (ImageView) holder.itemView.findViewById(R.id.rating);
         imageLoader.displayImage(movie.getCoverPath(), holder.imageView, null, new ImageLoadingListener() {
@@ -100,10 +99,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
         movieTitle.setText(movie.getTitle());
         movieTitle.setSelected(true);
         TextView rating = (TextView) holder.itemView.findViewById(R.id.rating_number);
-        rating.setText("" + movie.getPopularity());
+        rating.setText(String.format("%s", movie.getPopularity()));
     }
 
-    public void viewMovieDetailFragment(Movie movie) {
+    private void viewMovieDetailFragment(Movie movie) {
         FragmentManager fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
         Fragment movieDetailFragment = fragmentManager.findFragmentByTag("MovieDetailFragment");
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -154,7 +153,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
     }
 
     @UiThread
-    public void updateList(List<Movie> newData) {
+    void updateList(List<Movie> newData) {
         movies.clear();
         movies.addAll(newData);
         notifyDataSetChanged();

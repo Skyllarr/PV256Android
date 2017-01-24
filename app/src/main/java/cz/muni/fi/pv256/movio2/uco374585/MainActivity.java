@@ -12,6 +12,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import cz.muni.fi.pv256.movio2.uco374585.synchronization.UpdaterSyncAdapter;
+
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "ListFragment";
@@ -24,6 +26,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setTheme();
         setContentView(R.layout.activity_main);
+
+        UpdaterSyncAdapter.initializeSyncAdapter(this);
         if (savedInstanceState == null) {
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             activeFragment = ListFragment.newInstance();
@@ -126,6 +130,9 @@ public class MainActivity extends AppCompatActivity {
                 }
                 transaction.commit();
                 return false;
+            case R.id.refresh:
+                UpdaterSyncAdapter.syncImmediately(MainActivity.this);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

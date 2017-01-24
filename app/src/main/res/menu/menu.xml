@@ -9,7 +9,12 @@
         android:icon="@drawable/ic_action_home"
         android:title="@string/home"
         app:showAsAction="ifRoom" />
-
+    <item
+        android:id="@+id/refresh"
+        android:enabled="true"
+        android:icon="@drawable/ic_action_refresh"
+        android:title="@string/refresh_db"
+        app:showAsAction="ifRoom" />
     <group android:id="@+id/group_selected">
         <item
             android:id="@+id/favourites"

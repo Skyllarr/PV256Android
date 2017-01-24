@@ -1,9 +1,9 @@
-package cz.muni.fi.pv256.movio2.uco374585.Data;
+package cz.muni.fi.pv256.movio2.uco374585.database;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import cz.muni.fi.pv256.movio2.uco374585.Models.Movie;
+import cz.muni.fi.pv256.movio2.uco374585.model.Movie;
 
 /**
  * Created by Skylar on 1/16/2017.

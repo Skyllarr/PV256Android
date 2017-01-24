@@ -1,4 +1,4 @@
-package cz.muni.fi.pv256.movio2.uco374585.Service;
+package cz.muni.fi.pv256.movio2.uco374585.service;
 
 /**
  * Created by Skylar on 1/19/2017.
