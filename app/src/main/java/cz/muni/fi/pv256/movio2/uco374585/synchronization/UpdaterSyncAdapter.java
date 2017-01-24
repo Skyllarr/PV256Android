@@ -172,7 +172,14 @@ public class UpdaterSyncAdapter extends AbstractThreadedSyncAdapter {
                     }
                 }
                 if (updated) {
-                    Toast.makeText(getContext(), "Movies have been updated.", Toast.LENGTH_SHORT).show();
+                    Handler handler = new Handler(Looper.getMainLooper());
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(getContext(), "Movies have been updated.", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
                 } else {
                     Handler handler = new Handler(Looper.getMainLooper());
                     handler.post(new Runnable() {
@@ -194,8 +201,7 @@ public class UpdaterSyncAdapter extends AbstractThreadedSyncAdapter {
     private static boolean areSynced(Movie savedMovie, Movie serverMovie) {
         return !(!compareStrings(savedMovie.getTitle(), serverMovie.getTitle()) ||
                 !compareStrings(savedMovie.getReleaseDate(), serverMovie.getReleaseDate()) ||
-                !compareStrings(savedMovie.getCoverPath(), serverMovie.getCoverPath()) ||
-                !compareStrings(savedMovie.getBackdrop(), serverMovie.getBackdrop()) ||
+                savedMovie.getPopularity() != serverMovie.getPopularity() ||
                 savedMovie.getVoteAverage() != serverMovie.getVoteAverage() ||
                 !compareStrings(savedMovie.getDescription(), serverMovie.getDescription()));
     }

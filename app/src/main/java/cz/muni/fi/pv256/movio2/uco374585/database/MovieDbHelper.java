@@ -27,8 +27,8 @@ class MovieDbHelper extends SQLiteOpenHelper {
                 MovieContract.MovieEntry.COLUMN_TITLE + " TEXT NOT NULL, " +
                 MovieContract.MovieEntry.COLUMN_POSTER_PATH + " TEXT," +
                 MovieContract.MovieEntry.COLUMN_BACKDROP_PATH + " TEXT," +
-                MovieContract.MovieEntry.COLUMN_VOTE_AVERAGE + " REAL," +
                 MovieContract.MovieEntry.COLUMN_POPULARITY + " REAL," +
+                MovieContract.MovieEntry.COLUMN_VOTE_AVERAGE + " REAL," +
                 MovieContract.MovieEntry.COLUMN_OVERVIEW + " TEXT," +
                 "UNIQUE (" + MovieContract.MovieEntry.COLUMN_MOVIE_ID + ") ON CONFLICT REPLACE" +
                 " );";

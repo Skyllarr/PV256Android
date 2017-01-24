@@ -10,7 +10,7 @@
     <string name="refresh">Refresh</string>
     <string name="stored">Stored</string>
     <string name="checkable">Favourites</string>
-    <string name="content_authority">cz.muni.fi.pv256.movio2.uco374585.pv256android</string>
-    <string name="sync_account_type">cz.muni.fi.pv256.movio2.uco374585.pv256android</string>
+    <string name="content_authority">cz.muni.fi.pv256.movio2.uco374585</string>
+    <string name="sync_account_type">cz.muni.fi.pv256.movio2.uco374585</string>
     <string name="refresh_db">Refresh db</string>
 </resources>

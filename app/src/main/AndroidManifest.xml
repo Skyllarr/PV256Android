@@ -30,7 +30,7 @@
         <service
             android:name=".service.TmdbPullService"
             android:exported="false"/>
-        <service android:name=".sync.UpdaterAuthenticatorService" >
+        <service android:name=".synchronization.auth.UpdaterAuthenticatorService" >
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
             </intent-filter>

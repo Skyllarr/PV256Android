@@ -23,8 +23,8 @@ public class MovieManager {
     private static final int COL_RELEASE_DATE = 3;
     private static final int COL_POSTER_PATH = 4;
     private static final int COL_BACKDROP_PATH = 5;
-    private static final int COL_VOTE_AVERAGE = 6;
-    private static final int COL_POPULARITY = 7;
+    private static final int COL_POPULARITY = 6;
+    private static final int COL_VOTE_AVERAGE = 7;
     private static final int COL_OVERVIEW = 8;
 
     private static final String[] MOVIE_COLUMNS = {

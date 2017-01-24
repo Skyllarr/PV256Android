@@ -122,8 +122,8 @@ public class Movie implements Parcelable {
         dest.writeString(this.coverPath);
         dest.writeString(this.title);
         dest.writeString(this.backdrop);
-        dest.writeFloat(this.voteAverage);
         dest.writeFloat(this.popularity);
+        dest.writeFloat(this.voteAverage);
         dest.writeString(this.description);
     }
 
