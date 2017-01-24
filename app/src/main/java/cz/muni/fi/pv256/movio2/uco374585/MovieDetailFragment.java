@@ -31,12 +31,15 @@ import cz.muni.fi.pv256.movio2.uco374585.database.loaders.MovieDeleteDbLoader;
 import cz.muni.fi.pv256.movio2.uco374585.database.loaders.MovieFindDbLoader;
 import cz.muni.fi.pv256.movio2.uco374585.database.MovieManager;
 import cz.muni.fi.pv256.movio2.uco374585.model.Movie;
+import cz.muni.fi.pv256.movio2.uco374585.ui.MovieDbCallbackPresenter;
+
+import static cz.muni.fi.pv256.movio2.uco374585.utils.Constants.LOADER_CREATE_MOVIE_ID;
+import static cz.muni.fi.pv256.movio2.uco374585.utils.Constants.LOADER_DELETE_MOVIE_ID;
+import static cz.muni.fi.pv256.movio2.uco374585.utils.Constants.LOADER_SWAP_FAVOURITE_VALUE_OF_MOVIE_ID;
 
 public class MovieDetailFragment extends Fragment {
 
-    private static final int LOADER_SWAP_FAVOURITE_VALUE_OF_MOVIE_ID = 1;
-    private static final int LOADER_CREATE_MOVIE_ID = 2;
-    private static final int LOADER_DELETE_MOVIE_ID = 3;
+
     private static final String TAG = "MovieDetailFragment";
     public static MovieDetailFragment instance;
     ImageLoader imageLoader;
@@ -152,9 +155,9 @@ public class MovieDetailFragment extends Fragment {
                 Bundle args = new Bundle();
                 args.putLong("id", movie.getId());
                 if (getLoaderManager().getLoader(LOADER_SWAP_FAVOURITE_VALUE_OF_MOVIE_ID) == null) {
-                    getLoaderManager().initLoader(LOADER_SWAP_FAVOURITE_VALUE_OF_MOVIE_ID, args, new MovieCallback(getActivity().getApplicationContext())).forceLoad();
+                    getLoaderManager().initLoader(LOADER_SWAP_FAVOURITE_VALUE_OF_MOVIE_ID, args, new MovieDbCallbackPresenter(getActivity().getApplicationContext())).forceLoad();
                 } else {
-                    getLoaderManager().restartLoader(LOADER_SWAP_FAVOURITE_VALUE_OF_MOVIE_ID, args, new MovieCallback(getActivity().getApplicationContext())).forceLoad();
+                    getLoaderManager().restartLoader(LOADER_SWAP_FAVOURITE_VALUE_OF_MOVIE_ID, args, new MovieDbCallbackPresenter(getActivity().getApplicationContext())).forceLoad();
                 }
             }
         });
@@ -238,81 +241,5 @@ public class MovieDetailFragment extends Fragment {
         transaction.commit();
     }
 
-    private class MovieCallback implements LoaderManager.LoaderCallbacks<List<Movie>> {
 
-        private static final String TAG = "MovieCallback";
-        Context mContext;
-
-        public MovieCallback(Context context) {
-            mContext = context;
-            Log.i(TAG, "+++ MovieCallback constructor called! +++");
-        }
-
-        @Override
-        public Loader<List<Movie>> onCreateLoader(int id, Bundle args) {
-            Log.i(TAG, "+++ onCreateLoader() called! +++");
-            switch (id) {
-                case LOADER_SWAP_FAVOURITE_VALUE_OF_MOVIE_ID:
-                    return new MovieFindDbLoader(mContext, args.getLong("id", 0));
-                case LOADER_CREATE_MOVIE_ID:
-                    return new MovieCreateDbLoader(mContext, (Movie) args.getParcelable("movie"));
-                case LOADER_DELETE_MOVIE_ID:
-                    return new MovieDeleteDbLoader(mContext, (Movie) args.getParcelable("movie"));
-                default:
-                    throw new UnsupportedOperationException("Not know loader id");
-            }
-        }
-
-        @Override
-        public void onLoadFinished(Loader<List<Movie>> loader, List<Movie> data) {
-            if (MovieDetailFragment.getInstance() == null) return;
-            Log.i(TAG, "+++ onLoadFinished() called! +++");
-            switch (loader.getId()) {
-                case LOADER_SWAP_FAVOURITE_VALUE_OF_MOVIE_ID:
-                    Log.i(TAG, "LOADER_FIND_MOVIE()");
-                    Bundle args = new Bundle();
-                    args.putLong("id", movie.getId());
-                    args.putParcelable("movie", movie);
-                    if (data.size() == 0) {
-                        if (getLoaderManager().getLoader(LOADER_CREATE_MOVIE_ID) == null) {
-                            getLoaderManager().initLoader(LOADER_CREATE_MOVIE_ID, args, MovieCallback.this).forceLoad();
-                        } else {
-                            getLoaderManager().restartLoader(LOADER_CREATE_MOVIE_ID, args, MovieCallback.this).forceLoad();
-                        }
-                    } else {
-                        if (getLoaderManager().getLoader(LOADER_DELETE_MOVIE_ID) == null) {
-                            getLoaderManager().initLoader(LOADER_DELETE_MOVIE_ID, args, MovieCallback.this).forceLoad();
-                        } else {
-                            getLoaderManager().restartLoader(LOADER_DELETE_MOVIE_ID, args, MovieCallback.this).forceLoad();
-                        }
-                    }
-                    break;
-                case LOADER_CREATE_MOVIE_ID:
-                    if (MovieDetailFragment.getInstance() != null) {
-                        Log.i(TAG, "LOADER_CREATE_MOVIE()");
-                        View view = MovieDetailFragment.getInstance().getView();
-                        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
-                        fab.setImageResource(R.drawable.ic_done);
-                        getLoaderManager().destroyLoader(LOADER_CREATE_MOVIE_ID);
-                    }
-                    break;
-                case LOADER_DELETE_MOVIE_ID:
-                    if (MovieDetailFragment.getInstance() != null) {
-                        Log.i("MovieCallback", "LOADER_DELETE_MOVIE()");
-                        View view = MovieDetailFragment.getInstance().getView();
-                        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
-                        fab.setImageResource(R.drawable.ic_rating_star);
-                        getLoaderManager().destroyLoader(LOADER_DELETE_MOVIE_ID);
-                    }
-                    break;
-                default:
-                    throw new UnsupportedOperationException("Unknown movie id passed to loader");
-            }
-        }
-
-        @Override
-        public void onLoaderReset(Loader<List<Movie>> loader) {
-            Log.i(TAG, "onLoaderReset()");
-        }
-    }
 }
