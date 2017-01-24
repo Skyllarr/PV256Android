@@ -137,7 +137,6 @@ public class MovieDetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.i(TAG, "+++ onCreateView() called! +++");
         View view = inflater.inflate(R.layout.fragment_movie_detail, container, false);
         setResources(view);
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
@@ -245,12 +244,10 @@ public class MovieDetailFragment extends Fragment {
 
         public MovieCallback(Context context) {
             mContext = context;
-            Log.i(TAG, "+++ MovieCallback constructor called! +++");
         }
 
         @Override
         public Loader<List<Movie>> onCreateLoader(int id, Bundle args) {
-            Log.i(TAG, "+++ onCreateLoader() called! +++");
             switch (id) {
                 case LOADER_SWAP_FAVOURITE_VALUE_OF_MOVIE_ID:
                     return new MovieFindDbLoader(mContext, args.getLong("id", 0));
@@ -266,7 +263,6 @@ public class MovieDetailFragment extends Fragment {
         @Override
         public void onLoadFinished(Loader<List<Movie>> loader, List<Movie> data) {
             if (MovieDetailFragment.getInstance() == null) return;
-            Log.i(TAG, "+++ onLoadFinished() called! +++");
             switch (loader.getId()) {
                 case LOADER_SWAP_FAVOURITE_VALUE_OF_MOVIE_ID:
                     Log.i(TAG, "LOADER_FIND_MOVIE()");

@@ -245,12 +245,10 @@ public class ListFragment extends Fragment {
 
         public ListCallback(Context context) {
             mContext = context;
-            Log.i("ListCallback", "+++ ListCallback constructor called! +++");
         }
 
         @Override
         public Loader<List<Movie>> onCreateLoader(int id, Bundle args) {
-            Log.i(TAG, "+++ onCreateLoader() called! +++");
             switch (id) {
                 case LOADER_FIND_ALL_MOVIE:
                     return new MovieFindAllDbLoader(mContext);
@@ -261,10 +259,10 @@ public class ListFragment extends Fragment {
 
         @Override
         public void onLoadFinished(Loader<List<Movie>> loader, List<Movie> data) {
-            Log.i(TAG, "+++ onLoadFinished() called! +++");
+            Log.i(TAG, "onLoadFinished()");
             switch (loader.getId()) {
                 case LOADER_FIND_ALL_MOVIE:
-                    Log.i("MovieCallback", "+++ LOADER_FIND_ALL_MOVIE() called! +++");
+                    Log.i(TAG, "LOADER_FIND_ALL_MOVIE()");
                     RecyclerView recyclerViewCat1 = (RecyclerView) getActivity()
                             .findViewById(R.id.recycler_view_movies_category1);
                     mAdapter = (RecyclerViewAdapter) recyclerViewCat1.getAdapter();
@@ -289,7 +287,6 @@ public class ListFragment extends Fragment {
 
         @Override
         public void onLoaderReset(Loader<List<Movie>> loader) {
-            Log.i(TAG, "+++ onLoaderReset() called! +++");
         }
     }
 }
