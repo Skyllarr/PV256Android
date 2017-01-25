@@ -1,6 +1,8 @@
 package cz.muni.fi.pv256.movio2.uco374585;
 
 import android.app.Activity;
+import android.content.res.Resources;
+import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.filters.LargeTest;
 import android.support.test.internal.runner.lifecycle.ActivityLifecycleMonitorImpl;
@@ -43,8 +45,8 @@ import static org.hamcrest.Matchers.startsWith;
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class ListMoviesTest {
-    private static final String LOG_TAG = "ListMoviesTest";
     private MainActivity mainActivity;
+    Resources resources = InstrumentationRegistry.getContext().getResources();
 
     @Rule
     public final ActivityTestRule<MainActivity> rule = new ActivityTestRule<>(MainActivity.class);
@@ -66,10 +68,10 @@ public class ListMoviesTest {
         Thread.sleep(3000);
         openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
         Thread.sleep(3000);
-        onView(withText("Favourites"))
+        onView(withText(rule.getActivity().getString(R.string.favourites)))
                 .perform(click());
         Thread.sleep(3000);
-        onView(withId(R.id.category1)).check(matches(withText(startsWith("Favourites"))));
+        onView(withId(R.id.category1)).check(matches(withText(startsWith(rule.getActivity().getString(R.string.favourites)))));
     }
 
     @Test
@@ -80,7 +82,7 @@ public class ListMoviesTest {
         Thread.sleep(3000);
         openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
         Thread.sleep(3000);
-        onView(withText("Discover"))
+        onView(withText(rule.getActivity().getString(R.string.discover)))
                 .perform(click());
         Thread.sleep(3000);
         onView(withId(R.id.category1)).check(matches(withText(startsWith(rule.getActivity().getString(R.string.category1)))));
@@ -96,18 +98,6 @@ public class ListMoviesTest {
                 .perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
         Thread.sleep(3000);
         onView(withId(R.id.movie_title)).check(matches(isDisplayed()));
-    }
-
-    @Test
-    public void testSync() throws IOException, InterruptedException {
-        Thread.sleep(3000);
-        onView(withId(R.id.refresh))
-                .perform(click());
-        onView(withText("Up to date."))
-                .inRoot(withDecorView(not(is(mainActivity
-                        .getWindow()
-                        .getDecorView()))))
-                .check(matches(isDisplayed()));
     }
 
     @Test

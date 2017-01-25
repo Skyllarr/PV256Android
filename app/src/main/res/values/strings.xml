@@ -20,4 +20,7 @@
     <string name="favourite_movie">Movie was saved to favourites.</string>
     <string name="favourites">Favourites</string>
     <string name="discover">Discover</string>
+    <string name="change_theme">Change theme</string>
+    <string name="up_to_date_toast">Up to date.</string>
+    <string name="movies_have_updated">Movies have been updated.</string>
 </resources>

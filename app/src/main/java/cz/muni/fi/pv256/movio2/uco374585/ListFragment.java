@@ -186,7 +186,7 @@ public class ListFragment extends Fragment {
                 if (item.isChecked()) item.setChecked(false);
                 else item.setChecked(true);
                 TextView category1 = (TextView) getView().findViewById(R.id.category1);
-                category1.setText("Favourites");
+                category1.setText(R.string.favourites);
                 getLoaderManager().initLoader(LOADER_FIND_ALL_MOVIE, null, new ListCallback(getActivity().getApplicationContext())).forceLoad();
                 return true;
             case R.id.discover:

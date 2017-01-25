@@ -176,7 +176,7 @@ public class UpdaterSyncAdapter extends AbstractThreadedSyncAdapter {
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(getContext(), "Movies have been updated.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), R.string.movies_have_updated, Toast.LENGTH_SHORT).show();
                         }
                     });
 
@@ -185,7 +185,7 @@ public class UpdaterSyncAdapter extends AbstractThreadedSyncAdapter {
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(getContext(), "Up to date.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), R.string.up_to_date_toast, Toast.LENGTH_SHORT).show();
                         }
                     });
                 }

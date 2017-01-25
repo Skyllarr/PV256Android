@@ -8,4 +8,7 @@
     <string name="favourite_movie">Film se uložil do oblíbených.</string>
     <string name="favourites">Oblíbené</string>
     <string name="discover">Hledat</string>
+    <string name="change_theme">Změnit tému</string>
+    <string name="up_to_date_toast">Filmy sú aktuální.</string>
+    <string name="movies_have_updated">Filmy byli updatenuté.</string>
 </resources>
