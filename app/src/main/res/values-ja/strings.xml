@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="displaying">三味線</string>
+    <string name="category1">箏 味線 琴</string>
+    <string name="category2">琴 三味線 琴</string>
+    <string name="category3">味線 箏 三味線</string>
+    <string name="home">箏</string>
+    <string name="favourite_movie">三味線 箏 三味線 箏 琴.</string>
+    <string name="favourites">琴</string>
+    <string name="discover">味線</string>
+</resources>

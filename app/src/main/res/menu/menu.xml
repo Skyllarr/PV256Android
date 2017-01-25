@@ -18,10 +18,10 @@
     <group android:id="@+id/group_selected">
         <item
             android:id="@+id/favourites"
-            android:title="Favourites" />
+            android:title="@string/favourites" />
         <item
             android:id="@+id/discover"
-            android:title="Discover" />
+            android:title="@string/discover" />
     </group>
     <item
         android:id="@+id/action_refresh"

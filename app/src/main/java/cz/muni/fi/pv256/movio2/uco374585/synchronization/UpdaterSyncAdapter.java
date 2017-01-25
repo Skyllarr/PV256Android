@@ -201,7 +201,6 @@ public class UpdaterSyncAdapter extends AbstractThreadedSyncAdapter {
     private static boolean areSynced(Movie savedMovie, Movie serverMovie) {
         return !(!compareStrings(savedMovie.getTitle(), serverMovie.getTitle()) ||
                 !compareStrings(savedMovie.getReleaseDate(), serverMovie.getReleaseDate()) ||
-                savedMovie.getPopularity() != serverMovie.getPopularity() ||
                 savedMovie.getVoteAverage() != serverMovie.getVoteAverage() ||
                 !compareStrings(savedMovie.getDescription(), serverMovie.getDescription()));
     }

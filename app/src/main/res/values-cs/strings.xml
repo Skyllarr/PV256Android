@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="displaying">Nejpopulárneší</string>
+    <string name="category1">Otevíra tenhle víkend</string>
+    <string name="category2">Najvyššie hodnotené tento rok</string>
+    <string name="category3">Nejpopulárnejší všetkých dob</string>
+    <string name="home">Domov</string>
+    <string name="favourite_movie">Film se uložil do oblíbených.</string>
+    <string name="favourites">Oblíbené</string>
+    <string name="discover">Hledat</string>
+</resources>

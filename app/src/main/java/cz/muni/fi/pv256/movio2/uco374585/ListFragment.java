@@ -101,8 +101,8 @@ public class ListFragment extends Fragment {
                     case "FINISHED":
                         getActivity().getSupportFragmentManager()
                                 .beginTransaction()
-                                .detach(getActivity().getSupportFragmentManager().findFragmentByTag("ListFragment"))
-                                .attach(getActivity().getSupportFragmentManager().findFragmentByTag("ListFragment"))
+                                .detach(getActivity().getSupportFragmentManager().findFragmentByTag(getString(R.string.list_fragment_tag)))
+                                .attach(getActivity().getSupportFragmentManager().findFragmentByTag(getString(R.string.list_fragment_tag)))
                                 .commit();
                         break;
                 }
@@ -153,7 +153,7 @@ public class ListFragment extends Fragment {
         if (favourites) {
             View view = inflater.inflate(R.layout.main_fragment, container, false);
             TextView category1 = (TextView) view.findViewById(R.id.category1);
-            category1.setText("Favourites");
+            category1.setText(R.string.favourites);
             getLoaderManager().initLoader(LOADER_FIND_ALL_MOVIE, null, new ListCallback(getActivity().getApplicationContext())).forceLoad();
 
             return view;
@@ -175,8 +175,7 @@ public class ListFragment extends Fragment {
             }
             return view;
         } else {
-            View view = inflater.inflate(R.layout.main_fragment, container, false);
-            return view;
+            return inflater.inflate(R.layout.main_fragment, container, false);
         }
     }
 

@@ -113,14 +113,14 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     private void viewMovieDetailFragment(Movie movie) {
         FragmentManager fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
-        Fragment movieDetailFragment = fragmentManager.findFragmentByTag("MovieDetailFragment");
+        Fragment movieDetailFragment = fragmentManager.findFragmentByTag(context.getString(R.string.detail_fragment_tag));
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         if (movieDetailFragment == null) {
             movieDetailFragment = MovieDetailFragment.newInstance(movie);
             Bundle bundle = new Bundle();
             bundle.putParcelable("movie", movie);
             movieDetailFragment.setArguments(bundle);
-            fragmentTransaction.replace(R.id.fragment_container, movieDetailFragment, "MovieDetailFragment");
+            fragmentTransaction.replace(R.id.fragment_container, movieDetailFragment, context.getString(R.string.detail_fragment_tag));
         } else {
             movieDetailFragment.getArguments().putParcelable("movie", movie);
         }
@@ -132,7 +132,7 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
                     .commit();
         } else {
             fragmentTransaction
-                    .replace(R.id.fragment_container, movieDetailFragment, "MovieDetailFragment")
+                    .replace(R.id.fragment_container, movieDetailFragment, context.getString(R.string.detail_fragment_tag))
                     .addToBackStack(null)
                     .commit();
         }
@@ -172,11 +172,11 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
         return movies;
     }
 
-    public void insert(int position, Movie movie) {
+    void insert(int position, Movie movie) {
         movies.add(position, movie);
     }
 
-    public void remove(Movie movie) {
+    void remove(Movie movie) {
         int position = movies.indexOf(movie);
         if (position == -1) return;
         movies.remove(position);

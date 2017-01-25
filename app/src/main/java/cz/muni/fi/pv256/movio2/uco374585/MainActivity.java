@@ -32,11 +32,11 @@ public class MainActivity extends AppCompatActivity {
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             activeFragment = ListFragment.newInstance();
             if (getResources().getBoolean(R.bool.isTablet)) {
-                transaction.add(R.id.home_fragment, activeFragment, "ListFragment");
+                transaction.add(R.id.home_fragment, activeFragment, getString(R.string.list_fragment_tag));
             } else {
-                transaction.add(R.id.fragment_container, activeFragment, "ListFragment");
+                transaction.add(R.id.fragment_container, activeFragment, getString(R.string.list_fragment_tag));
             }
-            boolean fragmentPopped = getSupportFragmentManager().popBackStackImmediate("ListFragment", 0);
+            boolean fragmentPopped = getSupportFragmentManager().popBackStackImmediate(getString(R.string.list_fragment_tag), 0);
 
             if (!fragmentPopped) {
                 transaction.addToBackStack(null);
@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.action_home:
                 MovieDetailFragment movieDetailFragment =
-                        (MovieDetailFragment) getSupportFragmentManager().findFragmentByTag("MovieDetailFragment");
+                        (MovieDetailFragment) getSupportFragmentManager().findFragmentByTag(getString(R.string.detail_fragment_tag));
                 if (!getResources().getBoolean(R.bool.isTablet) &&
                         movieDetailFragment != null &&
                         movieDetailFragment.isVisible()) {
@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
                         fm.popBackStack();
                     }
                     fm.beginTransaction()
-                            .add(R.id.fragment_container, ListFragment.newInstance(), "ListFragment")
+                            .add(R.id.fragment_container, ListFragment.newInstance(), getString(R.string.list_fragment_tag))
                             .commit();
                 }
                 return true;
@@ -124,9 +124,9 @@ public class MainActivity extends AppCompatActivity {
                 transaction = getSupportFragmentManager().beginTransaction();
                 activeFragment = ListFragment.newInstance();
                 if (getResources().getBoolean(R.bool.isTablet)) {
-                    transaction.replace(R.id.home_fragment, activeFragment, "ListFragment");
+                    transaction.replace(R.id.home_fragment, activeFragment, getString(R.string.list_fragment_tag));
                 } else {
-                    transaction.replace(R.id.fragment_container, activeFragment, "ListFragment");
+                    transaction.replace(R.id.fragment_container, activeFragment, getString(R.string.list_fragment_tag));
                 }
                 transaction.commit();
                 return false;

@@ -1,0 +1,10 @@
+<resources>
+    <string name="displaying">Most popular</string>
+    <string name="category1">This week opening</string>
+    <string name="category2">Most upvoted this year</string>
+    <string name="category3">Most popular of all times</string>
+    <string name="home">Home</string>
+    <string name="favourite_movie">Movie was saved to favourites.</string>
+    <string name="favourites">Favourites</string>
+    <string name="discover">Discover</string>
+</resources>

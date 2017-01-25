@@ -124,9 +124,9 @@ public class MovieDetailFragment extends Fragment {
         description.setText(movie.getDescription());
 
         TextView popularity = (TextView) view.findViewById(R.id.popularity);
-        popularity.setText("" + movie.getPopularity());
+        popularity.setText(String.format("%s", movie.getPopularity()));
         String text = popularity.getText().toString();
-        popularity.setText(text.substring(0, text.length() - 2) + "%");
+        popularity.setText(String.format("%s%%", text.substring(0, text.length() - 2)));
     }
 
     public void setResources(View view) {
@@ -207,16 +207,16 @@ public class MovieDetailFragment extends Fragment {
                 ListFragment listFragment =
                         (ListFragment) getActivity()
                                 .getSupportFragmentManager()
-                                .findFragmentByTag("ListFragment");
+                                .findFragmentByTag(getString(R.string.list_fragment_tag));
                 if (listFragment == null) {
                     listFragment = ListFragment.newInstance();
                 }
                 listFragment.setFavourites(true);
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                 if (getResources().getBoolean(R.bool.isTablet)) {
-                    transaction.replace(R.id.home_fragment, listFragment, "ListFragment");
+                    transaction.replace(R.id.home_fragment, listFragment, getString(R.string.list_fragment_tag));
                 } else {
-                    transaction.replace(R.id.fragment_container, listFragment, "ListFragment");
+                    transaction.replace(R.id.fragment_container, listFragment, getString(R.string.list_fragment_tag));
                 }
                 transaction.commit();
                 return true;
@@ -231,9 +231,9 @@ public class MovieDetailFragment extends Fragment {
     private void switchToListFragment() {
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         if (getResources().getBoolean(R.bool.isTablet)) {
-            transaction.replace(R.id.home_fragment, ListFragment.newInstance(), "ListFragment");
+            transaction.replace(R.id.home_fragment, ListFragment.newInstance(), getString(R.string.list_fragment_tag));
         } else {
-            transaction.replace(R.id.fragment_container, ListFragment.newInstance(), "ListFragment");
+            transaction.replace(R.id.fragment_container, ListFragment.newInstance(), getString(R.string.list_fragment_tag));
         }
         transaction.commit();
     }
@@ -243,7 +243,7 @@ public class MovieDetailFragment extends Fragment {
         private static final String TAG = "MovieCallback";
         Context mContext;
 
-        MovieCallback(Context context) {
+        public MovieCallback(Context context) {
             mContext = context;
         }
 
@@ -290,8 +290,13 @@ public class MovieDetailFragment extends Fragment {
                         Toast.makeText(getActivity(), R.string.favourite_movie,
                                 Toast.LENGTH_SHORT).show();
                         View view = MovieDetailFragment.getInstance().getView();
-                        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
-                        fab.setImageResource(R.drawable.ic_done);
+                        FloatingActionButton fab = null;
+                        if (view != null) {
+                            fab = (FloatingActionButton) view.findViewById(R.id.fab);
+                        }
+                        if (fab != null) {
+                            fab.setImageResource(R.drawable.ic_done);
+                        }
                         getLoaderManager().destroyLoader(LOADER_CREATE_MOVIE_ID);
                     }
                     break;
@@ -299,8 +304,13 @@ public class MovieDetailFragment extends Fragment {
                     if (MovieDetailFragment.getInstance() != null) {
                         Log.i("MovieCallback", "LOADER_DELETE_MOVIE()");
                         View view = MovieDetailFragment.getInstance().getView();
-                        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
-                        fab.setImageResource(R.drawable.ic_rating_star);
+                        FloatingActionButton fab = null;
+                        if (view != null) {
+                            fab = (FloatingActionButton) view.findViewById(R.id.fab);
+                        }
+                        if (fab != null) {
+                            fab.setImageResource(R.drawable.ic_rating_star);
+                        }
                         getLoaderManager().destroyLoader(LOADER_DELETE_MOVIE_ID);
                     }
                     break;
