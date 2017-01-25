@@ -91,7 +91,7 @@ public class ListMoviesTest {
         Thread.sleep(3000);
         onView(withId(R.id.action_home))
                 .perform(click());
-        Thread.sleep(3000);
+        Thread.sleep(1000);
         onView(withId(R.id.recycler_view_movies_category1))
                 .perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
         Thread.sleep(3000);
@@ -103,7 +103,6 @@ public class ListMoviesTest {
         Thread.sleep(3000);
         onView(withId(R.id.refresh))
                 .perform(click());
-        Thread.sleep(2000);
         onView(withText("Up to date."))
                 .inRoot(withDecorView(not(is(mainActivity
                         .getWindow()
@@ -116,10 +115,10 @@ public class ListMoviesTest {
         Thread.sleep(3000);
         onView(withId(R.id.recycler_view_movies_category1))
                 .perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
-        Thread.sleep(3000);
+        Thread.sleep(1000);
         onView(withId(R.id.action_home))
                 .perform(click());
-        Thread.sleep(3000);
+        Thread.sleep(1000);
         onView(withId(R.id.category1)).check(matches(withText(startsWith(rule.getActivity().getString(R.string.category1)))));
     }
 }
