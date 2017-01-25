@@ -34,6 +34,15 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
     private Context context;
     private ImageLoader imageLoader;
 
+    public RecyclerViewAdapter() {
+    }
+
+    public void setMovies(List<Movie> movies) {
+        this.movies.clear();
+        this.movies.addAll(movies);
+    }
+
+
     RecyclerViewAdapter(List<Movie> movies, Context context) {
         this.movies.addAll(movies);
         this.context = context;
@@ -161,5 +170,15 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     public List<Movie> getData() {
         return movies;
+    }
+
+    public void insert(int position, Movie movie) {
+        movies.add(position, movie);
+    }
+
+    public void remove(Movie movie) {
+        int position = movies.indexOf(movie);
+        if (position == -1) return;
+        movies.remove(position);
     }
 }

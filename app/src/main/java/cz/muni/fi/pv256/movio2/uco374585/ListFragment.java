@@ -78,6 +78,8 @@ public class ListFragment extends Fragment {
         this.favourites = favourites;
     }
 
+    public boolean getFavourites() {return this.favourites;}
+
     @Override
     public void onAttach(Context context) {
         Log.i(TAG, "ListFragment was attached to its context");
@@ -238,7 +240,7 @@ public class ListFragment extends Fragment {
         super.onDetach();
     }
 
-    private class ListCallback implements LoaderManager.LoaderCallbacks<List<Movie>> {
+    public class ListCallback implements LoaderManager.LoaderCallbacks<List<Movie>> {
 
         private static final String TAG = "ListCallback";
         Context mContext;

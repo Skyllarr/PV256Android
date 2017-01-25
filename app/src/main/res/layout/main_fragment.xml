@@ -33,7 +33,8 @@
                 android:id="@+id/recycler_view_movies_category1"
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
-                android:scrollbars="vertical" />
+                android:scrollbars="vertical"
+                android:clickable="true"/>
 
             <TextView
                 android:id="@+id/category2"

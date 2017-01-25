@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -38,7 +39,7 @@ public class MovieDetailFragment extends Fragment {
     private static final int LOADER_CREATE_MOVIE_ID = 2;
     private static final int LOADER_DELETE_MOVIE_ID = 3;
     private static final String TAG = "MovieDetailFragment";
-    public static MovieDetailFragment instance;
+    static MovieDetailFragment instance;
     ImageLoader imageLoader;
     private Movie movie;
     private MovieManager movieManager;
@@ -242,7 +243,7 @@ public class MovieDetailFragment extends Fragment {
         private static final String TAG = "MovieCallback";
         Context mContext;
 
-        public MovieCallback(Context context) {
+        MovieCallback(Context context) {
             mContext = context;
         }
 
@@ -286,6 +287,8 @@ public class MovieDetailFragment extends Fragment {
                 case LOADER_CREATE_MOVIE_ID:
                     if (MovieDetailFragment.getInstance() != null) {
                         Log.i(TAG, "LOADER_CREATE_MOVIE()");
+                        Toast.makeText(getActivity(), R.string.favourite_movie,
+                                Toast.LENGTH_SHORT).show();
                         View view = MovieDetailFragment.getInstance().getView();
                         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
                         fab.setImageResource(R.drawable.ic_done);

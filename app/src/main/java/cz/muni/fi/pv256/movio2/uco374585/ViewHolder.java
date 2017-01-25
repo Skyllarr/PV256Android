@@ -9,11 +9,11 @@ import android.widget.ImageView;
  * Created by Skylar on 12/29/2016.
  */
 
-public class ViewHolder extends RecyclerView.ViewHolder {
+class ViewHolder extends RecyclerView.ViewHolder {
     CardView cardView;
     ImageView imageView;
 
-    public ViewHolder(View itemView) {
+    ViewHolder(View itemView) {
         super(itemView);
         cardView = (CardView) itemView.findViewById(R.id.card_view);
         imageView = (ImageView) itemView.findViewById(R.id.imageView);
