@@ -11,4 +11,15 @@
     <string name="change_theme">Zmeniť tému</string>
     <string name="up_to_date_toast">Filmy sú aktuálne.</string>
     <string name="movies_have_updated">Filmy boli updatenuté.</string>
+
+    <string name="app_name">Movio</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="movie_title">Movie Title</string>
+    <string name="refresh">Refresh</string>
+    <string name="stored">Stored</string>
+    <string name="checkable">Favourites</string>
+    <string name="sync_account_type">cz.muni.fi.pv256.movio2.uco374585</string>
+    <string name="refresh_db">Refresh db</string>
+    <string name="detail_fragment_tag">MovieDetailFragment</string>
+    <string name="list_fragment_tag">ListFragment</string>
 </resources>

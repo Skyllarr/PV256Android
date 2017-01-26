@@ -23,8 +23,5 @@
             android:id="@+id/discover"
             android:title="@string/discover" />
     </group>
-    <item
-        android:id="@+id/action_refresh"
-        android:title="@string/change_theme" />
 
 </menu>

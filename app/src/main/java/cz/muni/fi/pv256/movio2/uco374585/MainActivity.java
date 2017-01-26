@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTheme();
+        //setTheme();
         setContentView(R.layout.activity_main);
 
         UpdaterSyncAdapter.initializeSyncAdapter(this);
@@ -100,9 +100,6 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         FragmentTransaction transaction;
         switch (item.getItemId()) {
-            case R.id.action_refresh:
-                changeTheme();
-                return true;
             case R.id.action_home:
                 MovieDetailFragment movieDetailFragment =
                         (MovieDetailFragment) getSupportFragmentManager().findFragmentByTag(getString(R.string.detail_fragment_tag));
@@ -145,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
         } else
             finish();
     }
-
+/*
     private void setTheme() {
         mPrefs = this.getApplicationContext().getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
         mDefaultTheme = mPrefs.getBoolean("defaultTheme", true);
@@ -153,8 +150,8 @@ public class MainActivity extends AppCompatActivity {
             this.setTheme(R.style.AppBaseTheme);
         else
             this.setTheme(R.style.AppBaseTheme_AppBaseThemeBlue);
-    }
-
+    }*/
+/*
     private void changeTheme() {
         getSupportFragmentManager().beginTransaction().remove(activeFragment).commit();
         mDefaultTheme = !mDefaultTheme;
@@ -164,5 +161,5 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = getIntent();
         finish();
         startActivity(intent);
-    }
+    }*/
 }

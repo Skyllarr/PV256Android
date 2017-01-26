@@ -61,7 +61,7 @@
         </receiver>
         <provider
             android:name=".database.MovieProvider"
-            android:authorities="cz.muni.fi.pv256.movio2.uco374585"
+            android:authorities="@string/CONTENT_AUTHORITY"
             android:exported="false"/>
     </application>
 

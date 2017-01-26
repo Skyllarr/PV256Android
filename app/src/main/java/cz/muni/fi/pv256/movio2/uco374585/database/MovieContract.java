@@ -1,8 +1,11 @@
 package cz.muni.fi.pv256.movio2.uco374585.database;
 
 import android.content.ContentUris;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.provider.BaseColumns;
+
+import cz.muni.fi.pv256.movio2.uco374585.R;
 
 /**
  * Created by Skylar on 1/19/2017.
@@ -10,7 +13,7 @@ import android.provider.BaseColumns;
 
 public class MovieContract {
 
-    public static final String CONTENT_AUTHORITY = "cz.muni.fi.pv256.movio2.uco374585";
+    public static final String CONTENT_AUTHORITY = Resources.getSystem().getString(R.string.CONTENT_AUTHORITY);
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
     public static final String PATH_MOVIES = "movie";
 

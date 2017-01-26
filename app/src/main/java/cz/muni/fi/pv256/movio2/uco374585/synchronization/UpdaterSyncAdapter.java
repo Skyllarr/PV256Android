@@ -60,7 +60,7 @@ public class UpdaterSyncAdapter extends AbstractThreadedSyncAdapter {
 
     private static void configurePeriodicSync(Context context, int syncInterval, int flexTime) {
         Account account = getSyncAccount(context);
-        String authority = context.getString(R.string.content_authority);
+        String authority = context.getString(R.string.CONTENT_AUTHORITY);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             // we can enable inexact timers in our periodic sync
             SyncRequest request = new SyncRequest.Builder()
@@ -78,7 +78,7 @@ public class UpdaterSyncAdapter extends AbstractThreadedSyncAdapter {
         Bundle bundle = new Bundle();
         bundle.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
         bundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
-        ContentResolver.requestSync(getSyncAccount(context), context.getString(R.string.content_authority), bundle);
+        ContentResolver.requestSync(getSyncAccount(context), context.getString(R.string.CONTENT_AUTHORITY), bundle);
     }
 
     private static Account getSyncAccount(Context context) {
@@ -119,7 +119,7 @@ public class UpdaterSyncAdapter extends AbstractThreadedSyncAdapter {
         /*
          * Without calling setSyncAutomatically, our periodic sync will not be enabled.
          */
-        ContentResolver.setSyncAutomatically(newAccount, context.getString(R.string.content_authority), true);
+        ContentResolver.setSyncAutomatically(newAccount, context.getString(R.string.CONTENT_AUTHORITY), true);
 
         /*
          * Finally, let's do a sync to get things started
