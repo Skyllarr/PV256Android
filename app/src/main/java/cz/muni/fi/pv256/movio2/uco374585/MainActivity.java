@@ -20,11 +20,13 @@ public class MainActivity extends AppCompatActivity {
     private SharedPreferences mPrefs;
     private Boolean mDefaultTheme;
     private Fragment activeFragment;
+    private static Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setTheme();
+        mContext = this;
         setContentView(R.layout.activity_main);
 
         UpdaterSyncAdapter.initializeSyncAdapter(this);
@@ -43,6 +45,10 @@ public class MainActivity extends AppCompatActivity {
             }
             transaction.commit();
         }
+    }
+
+    public static Context getContext(){
+        return mContext;
     }
 
     @Override
