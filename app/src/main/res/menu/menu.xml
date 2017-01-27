@@ -3,13 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/toolbar_menu">
 
-    <item
-        android:id="@+id/action_home"
-        android:enabled="true"
-        android:icon="@drawable/ic_action_home"
-        android:title="@string/home"
-        app:showAsAction="ifRoom" />
-
     <group android:id="@+id/group_selected">
         <item
             android:id="@+id/favourites"
