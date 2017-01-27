@@ -9,7 +9,7 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
-public interface TmdbAPI {
+public interface TMDBApi {
 
     @GET("movie")
     Call<DiscoverResponse> loadMoviesFromDateToDate(@Query("primary_release_date.gte") String dateFrom,
