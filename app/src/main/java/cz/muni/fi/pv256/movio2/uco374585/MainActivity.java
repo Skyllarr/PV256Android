@@ -1,16 +1,18 @@
 package cz.muni.fi.pv256.movio2.uco374585;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import cz.muni.fi.pv256.movio2.uco374585.synchronization.UpdaterSyncAdapter;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,15 +26,21 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setTheme();
         setContentView(R.layout.activity_main);
+
+        UpdaterSyncAdapter.initializeSyncAdapter(this);
         if (savedInstanceState == null) {
-            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             activeFragment = ListFragment.newInstance();
             if (getResources().getBoolean(R.bool.isTablet)) {
                 transaction.add(R.id.home_fragment, activeFragment, "ListFragment");
             } else {
                 transaction.add(R.id.fragment_container, activeFragment, "ListFragment");
             }
-            transaction.addToBackStack(null);
+            boolean fragmentPopped = getSupportFragmentManager().popBackStackImmediate("ListFragment", 0);
+
+            if (!fragmentPopped) {
+                transaction.addToBackStack(null);
+            }
             transaction.commit();
         }
     }
@@ -81,9 +89,6 @@ public class MainActivity extends AppCompatActivity {
         super.onSaveInstanceState(savedInstanceState);
     }
 
-    public void onRestoreInstanceState(Bundle inState) {
-
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -93,26 +98,25 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        FragmentTransaction transaction;
         switch (item.getItemId()) {
             case R.id.action_refresh:
                 changeTheme();
                 return true;
-            case R.id.action_home:
-                MovieDetailFragment movieDetailFragment =
-                        (MovieDetailFragment) getFragmentManager().findFragmentByTag("MovieDetailFragment");
-                if (!getResources().getBoolean(R.bool.isTablet) &&
-                        movieDetailFragment != null &&
-                        movieDetailFragment.isVisible()) {
-                    //empty backstack upon pressing home
-                    FragmentManager fm = getFragmentManager();
-                    for (int i = 0; i < fm.getBackStackEntryCount(); ++i) {
-                        fm.popBackStack();
-                    }
-                    fm.beginTransaction()
-                            .add(R.id.fragment_container, ListFragment.newInstance(), "ListFragment")
-                            .addToBackStack(null)
-                            .commit();
+            case R.id.favourites:
+                return false;
+            case R.id.discover:
+                transaction = getSupportFragmentManager().beginTransaction();
+                activeFragment = ListFragment.newInstance();
+                if (getResources().getBoolean(R.bool.isTablet)) {
+                    transaction.replace(R.id.home_fragment, activeFragment, "ListFragment");
+                } else {
+                    transaction.replace(R.id.fragment_container, activeFragment, "ListFragment");
                 }
+                transaction.commit();
+                return false;
+            case R.id.refresh:
+                UpdaterSyncAdapter.syncImmediately(MainActivity.this);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -121,8 +125,13 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (getFragmentManager().getBackStackEntryCount() > 1) {
-            getFragmentManager().popBackStack();
+        Fragment listFragment = getSupportFragmentManager().findFragmentByTag("ListFragment");
+        if (listFragment != null && listFragment.isVisible()) {
+            finish();
+            return;
+        }
+        if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
+            getSupportFragmentManager().popBackStack();
         } else
             finish();
     }
@@ -137,6 +146,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void changeTheme() {
+        getSupportFragmentManager().beginTransaction().remove(activeFragment).commit();
         mDefaultTheme = !mDefaultTheme;
         SharedPreferences.Editor editor = mPrefs.edit();
         editor.putBoolean("defaultTheme", mDefaultTheme);
