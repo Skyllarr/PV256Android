@@ -92,7 +92,6 @@ public class ListFragment extends Fragment {
                     new ArrayList<>(Arrays.asList("category1", "category2", "category3")));
             getActivity().startService(mServiceIntent);
         }
-        getActivity().registerReceiver(receiver, intentFilter);
     }
 
     @Override
@@ -107,6 +106,8 @@ public class ListFragment extends Fragment {
     public void onResume() {
         Log.i(TAG, "ListFragment is now able to interact with the user");
         super.onResume();
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver((receiver),
+                new IntentFilter(TmdbPullService.TMDB_RESULT));
     }
 
     @Override
@@ -114,6 +115,7 @@ public class ListFragment extends Fragment {
         Log.i(TAG, "ListFragment is no longer interacting with the user either " +
                 "because its activity is being paused or a fragment operation is modifying it in the activity.");
         super.onPause();
+        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(receiver);
     }
 
     @Override
