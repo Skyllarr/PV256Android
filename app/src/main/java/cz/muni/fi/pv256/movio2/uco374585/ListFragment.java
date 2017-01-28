@@ -10,6 +10,7 @@ import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.Loader;
@@ -134,7 +135,6 @@ public class ListFragment extends Fragment {
                 "because its activity is being paused or a fragment operation is modifying it in the activity.");
         mBroadcastManager.unregisterReceiver(mBroadcastReceiver);
         super.onPause();
-
     }
 
     @Override

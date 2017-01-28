@@ -22,8 +22,8 @@ public class DiscoverResponse {
         if (results != null) {
             for (MovieDTO movie : results) {
                 if (movie.getTitle() != null && movie.getBackdropPath() != null && movie.getPosterPath() != null) {
-                    movie.setPosterPath(Query.IMAGE_URL + movie.getPosterPath().substring(1));
-                    movie.setBackdropPath(Query.IMAGE_URL + movie.getBackdropPath().substring(1));
+                    movie.setPosterPath(Query.IMAGE_URL + movie.getPosterPath());
+                    movie.setBackdropPath(Query.IMAGE_URL + movie.getBackdropPath());
                     BigDecimal popularity = new BigDecimal(Math.round(movie.getPopularity() * 10.0) / 10.0);
                     BigDecimal voteAverage = new BigDecimal(movie.getVoteAverage());
                     movie.setPopularity(popularity.floatValue());

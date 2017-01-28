@@ -125,6 +125,11 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        Fragment listFragment = getSupportFragmentManager().findFragmentByTag("ListFragment");
+        if (listFragment != null && listFragment.isVisible()) {
+            finish();
+            return;
+        }
         if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
             getSupportFragmentManager().popBackStack();
         } else

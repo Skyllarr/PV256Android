@@ -34,8 +34,8 @@ public class Movie implements Parcelable {
         this.coverPath = parcel.readString();
         this.title = parcel.readString();
         this.backdrop = parcel.readString();
-        this.voteAverage = parcel.readFloat();
         this.popularity = parcel.readFloat();
+        this.voteAverage = parcel.readFloat();
         this.description = parcel.readString();
     }
 

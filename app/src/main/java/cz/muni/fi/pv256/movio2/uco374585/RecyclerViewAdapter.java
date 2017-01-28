@@ -28,6 +28,8 @@ import java.util.List;
 
 import cz.muni.fi.pv256.movio2.uco374585.model.Movie;
 
+import static cz.muni.fi.pv256.movio2.uco374585.api.Query.IMAGE_URL;
+
 class RecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     private List<Movie> movies = new ArrayList<>();
@@ -58,7 +60,13 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
     private void setMovieImageWithBottomPanel(final ViewHolder holder, Movie movie) {
         final ProgressBar spinner = (ProgressBar) holder.itemView.findViewById(R.id.spinner);
         final ImageView star = (ImageView) holder.itemView.findViewById(R.id.rating);
-        imageLoader.displayImage(movie.getCoverPath(), holder.imageView, null, new ImageLoadingListener() {
+        if (!movie.getCoverPath().contains(IMAGE_URL)) {
+            movie.setCoverPath(IMAGE_URL + movie.getCoverPath());
+        }
+        if (!movie.getBackdrop().contains(IMAGE_URL)) {
+            movie.setBackdrop(IMAGE_URL + movie.getBackdrop());
+        }
+        imageLoader.displayImage(movie.getCoverPath().replace("original//", "original/"), holder.imageView, null, new ImageLoadingListener() {
             @Override
             public void onLoadingStarted(String imageUri, View view) {
                 spinner.setVisibility(View.VISIBLE);
@@ -99,7 +107,7 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
         movieTitle.setText(movie.getTitle());
         movieTitle.setSelected(true);
         TextView rating = (TextView) holder.itemView.findViewById(R.id.rating_number);
-        rating.setText(String.format("%s", movie.getPopularity()));
+        rating.setText(String.format( "%.1f", movie.getPopularity() ));
     }
 
     private void viewMovieDetailFragment(Movie movie) {

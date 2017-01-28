@@ -202,6 +202,7 @@ public class UpdaterSyncAdapter extends AbstractThreadedSyncAdapter {
         return !(!compareStrings(savedMovie.getTitle(), serverMovie.getTitle()) ||
                 !compareStrings(savedMovie.getReleaseDate(), serverMovie.getReleaseDate()) ||
                 savedMovie.getPopularity() != serverMovie.getPopularity() ||
+                (Math.abs(serverMovie.getPopularity() - savedMovie.getPopularity()) > 0.3) ||
                 savedMovie.getVoteAverage() != serverMovie.getVoteAverage() ||
                 !compareStrings(savedMovie.getDescription(), serverMovie.getDescription()));
     }

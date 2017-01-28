@@ -34,8 +34,8 @@ public class MovieManager {
             MovieContract.MovieEntry.COLUMN_RELEASE_DATE,
             MovieContract.MovieEntry.COLUMN_POSTER_PATH,
             MovieContract.MovieEntry.COLUMN_BACKDROP_PATH,
-            MovieContract.MovieEntry.COLUMN_VOTE_AVERAGE,
             MovieContract.MovieEntry.COLUMN_POPULARITY,
+            MovieContract.MovieEntry.COLUMN_VOTE_AVERAGE,
             MovieContract.MovieEntry.COLUMN_OVERVIEW
     };
 
@@ -121,8 +121,8 @@ public class MovieManager {
         values.put(MovieContract.MovieEntry.COLUMN_TITLE, movie.getTitle());
         values.put(MovieContract.MovieEntry.COLUMN_POSTER_PATH, movie.getCoverPath());
         values.put(MovieContract.MovieEntry.COLUMN_BACKDROP_PATH, movie.getBackdrop());
-        values.put(MovieContract.MovieEntry.COLUMN_VOTE_AVERAGE, movie.getVoteAverage());
         values.put(MovieContract.MovieEntry.COLUMN_POPULARITY, movie.getPopularity());
+        values.put(MovieContract.MovieEntry.COLUMN_VOTE_AVERAGE, movie.getVoteAverage());
         values.put(MovieContract.MovieEntry.COLUMN_OVERVIEW, movie.getDescription());
         return values;
     }
@@ -134,8 +134,8 @@ public class MovieManager {
                 cursor.getString(COL_POSTER_PATH),
                 cursor.getString(COL_TITLE),
                 cursor.getString(COL_BACKDROP_PATH),
-                cursor.getFloat(COL_VOTE_AVERAGE),
                 cursor.getFloat(COL_POPULARITY),
+                cursor.getFloat(COL_VOTE_AVERAGE),
                 cursor.getString(COL_OVERVIEW)
         );
     }
