@@ -13,7 +13,7 @@ public class App extends Application {
 
     @Override
     public void onCreate() {
-        mContext = this;
+
         super.onCreate();
 
         if (BuildConfig.DEBUG) {
@@ -41,5 +41,12 @@ public class App extends Application {
             vmpb.detectLeakedClosableObjects();
         }
         StrictMode.setVmPolicy(vmpb.build());
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        mContext = this;
+        // some of your own operations before content provider will launch
     }
 }
