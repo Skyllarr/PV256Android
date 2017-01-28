@@ -103,21 +103,6 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_refresh:
                 changeTheme();
                 return true;
-            case R.id.action_home:
-                MovieDetailFragment movieDetailFragment =
-                        (MovieDetailFragment) getSupportFragmentManager().findFragmentByTag("MovieDetailFragment");
-                if (!getResources().getBoolean(R.bool.isTablet) &&
-                        movieDetailFragment != null &&
-                        movieDetailFragment.isVisible()) {
-                    FragmentManager fm = getSupportFragmentManager();
-                    for (int i = 0; i < fm.getBackStackEntryCount(); ++i) {
-                        fm.popBackStack();
-                    }
-                    fm.beginTransaction()
-                            .add(R.id.fragment_container, ListFragment.newInstance(), "ListFragment")
-                            .commit();
-                }
-                return true;
             case R.id.favourites:
                 return false;
             case R.id.discover:
