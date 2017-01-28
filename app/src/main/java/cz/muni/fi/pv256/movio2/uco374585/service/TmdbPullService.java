@@ -19,7 +19,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import cz.muni.fi.pv256.movio2.uco374585.api.Query;
-import cz.muni.fi.pv256.movio2.uco374585.api.TMDBApi;
+import cz.muni.fi.pv256.movio2.uco374585.api.TmdbApi;
 import cz.muni.fi.pv256.movio2.uco374585.data.MovieDataSingleton;
 import cz.muni.fi.pv256.movio2.uco374585.models.DiscoverResponse;
 import cz.muni.fi.pv256.movio2.uco374585.models.Movie;
@@ -68,7 +68,7 @@ public class TmdbPullService extends IntentService {
     }
 
     private void FetchAndstoreFromAPI(List<String> categories,
-                                      TMDBApi tmdbAPI,
+                                      TmdbApi tmdbAPI,
                                       NotificationCompat.Builder mBuilder,
                                       NotificationManager mNotifyMgr) {
 
@@ -110,14 +110,14 @@ public class TmdbPullService extends IntentService {
                 .baseUrl(DISCOVER_URL)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
-        TMDBApi tmdbAPI = rest.create(TMDBApi.class);
+        TmdbApi tmdbAPI = rest.create(TmdbApi.class);
 
         FetchAndstoreFromAPI(categories, tmdbAPI, mBuilder, mNotifyMgr);
         sendResult("FINISHED");
         mNotifyMgr.cancel(NotificationConstants.downloadingNotifId);
     }
 
-    private Call<DiscoverResponse> fetchMoviesOfCategory(TMDBApi tmdbAPI, String movieCategory) {
+    private Call<DiscoverResponse> fetchMoviesOfCategory(TmdbApi tmdbAPI, String movieCategory) {
         switch (movieCategory) {
             case "category1":
                 return tmdbAPI.loadMoviesFromDateToDate(todayDate(), weekFromToday(), Query.API_KEY);

@@ -25,15 +25,15 @@
             </intent-filter>
         </activity>
         <service
-            android:name=".Service.TmdbPullService"
+            android:name=".service.TmdbPullService"
             android:exported="false"/>
-        <receiver android:name=".Service.InternetConnectionReceiver" >
+        <receiver android:name=".service.InternetConnectionReceiver" >
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
         <provider
-            android:name=".Data.MovieProvider"
+            android:name=".data.MovieProvider"
             android:authorities="cz.muni.fi.pv256.movio2.uco374585"
             android:exported="false"/>
     </application>

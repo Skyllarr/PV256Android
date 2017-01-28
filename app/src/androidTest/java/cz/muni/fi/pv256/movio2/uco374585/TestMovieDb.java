@@ -7,9 +7,9 @@ package cz.muni.fi.pv256.movio2.uco374585;
 import android.test.AndroidTestCase;
 import org.junit.Assert;
 import java.util.List;
-import cz.muni.fi.pv256.movio2.uco374585.Data.MovieContract;
-import cz.muni.fi.pv256.movio2.uco374585.Data.MovieManager;
-import cz.muni.fi.pv256.movio2.uco374585.Models.Movie;
+import cz.muni.fi.pv256.movio2.uco374585.data.MovieContract;
+import cz.muni.fi.pv256.movio2.uco374585.data.MovieManager;
+import cz.muni.fi.pv256.movio2.uco374585.models.Movie;
 
 public class TestMovieDb extends AndroidTestCase {
 
