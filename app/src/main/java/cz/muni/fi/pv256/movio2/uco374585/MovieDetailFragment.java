@@ -2,19 +2,25 @@ package cz.muni.fi.pv256.movio2.uco374585;
 
 import android.app.Fragment;
 import android.content.Context;
-import android.graphics.drawable.Drawable;
+import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.support.v4.content.res.ResourcesCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import java.text.SimpleDateFormat;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
+
+import cz.muni.fi.pv256.movio2.uco374585.Models.Movie;
 
 public class MovieDetailFragment extends Fragment {
 
+    ImageLoader imageLoader;
     private Movie movie;
 
     public MovieDetailFragment() {
@@ -35,40 +41,37 @@ public class MovieDetailFragment extends Fragment {
         if (getArguments() != null) {
             movie = getArguments().getParcelable("movie");
         }
+        imageLoader = ImageLoader.getInstance();
+        imageLoader.init(ImageLoaderConfiguration.createDefault(getActivity()));
     }
 
     public void setImages(View view) {
-        ImageView backdrop_imageView = (ImageView) view.findViewById(R.id.movie_backdrop);
-        ImageView movie_imageView = (ImageView) view.findViewById(R.id.movie_image);
-        Drawable backdrop;
-        Drawable mainPic;
-        switch (movie.getTitle()) {
-            case "Miss":
-                backdrop = (ResourcesCompat.getDrawable(getResources(),
-                        R.drawable.miss_peregrines_home_for_peculiar_children_backdrop, null));
-                mainPic = (ResourcesCompat.getDrawable(getResources(),
-                        R.drawable.miss_peregrines_home_for_peculiar_children, null));
-                break;
-            case "Rings":
-                backdrop = (ResourcesCompat.getDrawable(getResources(),
-                        R.drawable.rings_backdrop, null));
-                mainPic = (ResourcesCompat.getDrawable(getResources(),
-                        R.drawable.rings, null));
-                break;
-            case "Deepwater":
-                backdrop = (ResourcesCompat.getDrawable(getResources(),
-                        R.drawable.deepwater_horizon_backdrop, null));
-                mainPic = (ResourcesCompat.getDrawable(getResources(),
-                        R.drawable.deepwater_horizon, null));
-                break;
-            default:
-                backdrop = (ResourcesCompat.getDrawable(getResources(),
-                        R.drawable.miss_peregrines_home_for_peculiar_children_backdrop, null));
-                mainPic = (ResourcesCompat.getDrawable(getResources(),
-                        R.drawable.miss_peregrines_home_for_peculiar_children, null));
-        }
-        backdrop_imageView.setImageDrawable(backdrop);
-        movie_imageView.setImageDrawable(mainPic);
+        imageLoader.displayImage(movie.getCoverPath(), (ImageView) view.findViewById(R.id.movie_image));
+        imageLoader.displayImage(movie.getBackdrop(), (ImageView) view.findViewById(R.id.movie_backdrop));
+
+        final ProgressBar spinnerCover = (ProgressBar) view.findViewById(R.id.spinner_cover_detail);
+        imageLoader.displayImage(movie.getCoverPath(), (ImageView) view.findViewById(R.id.movie_image),
+                null, new ImageLoadingListener() {
+                    @Override
+                    public void onLoadingStarted(String imageUri, View view) {
+                        spinnerCover.setVisibility(View.VISIBLE);
+                    }
+
+                    @Override
+                    public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+                        spinnerCover.setVisibility(View.VISIBLE);
+                    }
+
+                    @Override
+                    public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                        spinnerCover.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onLoadingCancelled(String imageUri, View view) {
+
+                    }
+                });
     }
 
     public void setTexts(View view) {
@@ -76,10 +79,10 @@ public class MovieDetailFragment extends Fragment {
         title.setText(movie.getTitle());
 
         TextView releaseDate = (TextView) view.findViewById(R.id.release_date);
-        releaseDate.setText(String.valueOf(new SimpleDateFormat("yyyy/MM/dd").format(movie.getReleaseDate())));
+        releaseDate.setText(movie.getReleaseDate());
 
         TextView description = (TextView) view.findViewById(R.id.movie_description);
-        description.setText(String.valueOf(movie.getDescription()));
+        description.setText(movie.getDescription());
 
         TextView popularity = (TextView) view.findViewById(R.id.popularity);
         popularity.setText("" + movie.getPopularity());

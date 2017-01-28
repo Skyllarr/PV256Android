@@ -1,20 +1,35 @@
 package cz.muni.fi.pv256.movio2.uco374585;
 
 import android.app.Fragment;
-import android.app.FragmentTransaction;
+import android.app.NotificationManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.TextView;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Arrays;
 import java.util.List;
+
+import cz.muni.fi.pv256.movio2.uco374585.Data.MovieDataSingleton;
+import cz.muni.fi.pv256.movio2.uco374585.Models.Movie;
+import cz.muni.fi.pv256.movio2.uco374585.Service.NotificationConstants;
+import cz.muni.fi.pv256.movio2.uco374585.Service.TmdbPullService;
+
+import static android.content.Context.NOTIFICATION_SERVICE;
 
 /**
  * Created by Skylar on 12/27/2016.
@@ -23,8 +38,10 @@ import java.util.List;
 public class ListFragment extends Fragment {
 
     private static final String TAG = "ListFragment";
-    private List<Movie> movies = new ArrayList<>();
-    private Fragment movieDetailFragment;
+    private RecyclerView mRecyclerView;
+    private RecyclerView.LayoutManager mLayoutManager;
+    private RecyclerView.Adapter mAdapter;
+    private BroadcastReceiver receiver;
 
     public ListFragment() {
         // Required empty public constructor
@@ -33,6 +50,14 @@ public class ListFragment extends Fragment {
     public static ListFragment newInstance() {
         ListFragment fragment = new ListFragment();
         return fragment;
+    }
+
+    public boolean isInternetAvailable() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
     }
 
     @Override
@@ -44,19 +69,45 @@ public class ListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        createFakeMoviesData();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(WifiManager.SUPPLICANT_CONNECTION_CHANGE_ACTION);
+        receiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String message = intent.getStringExtra(TmdbPullService.TMDB_MESSAGE);
+                switch (message) {
+                    case "FINISHED":
+                        getFragmentManager()
+                                .beginTransaction()
+                                .detach(getFragmentManager().findFragmentByTag("ListFragment"))
+                                .attach(getFragmentManager().findFragmentByTag("ListFragment"))
+                                .commit();
+                        break;
+                }
+            }
+        };
+        if (isInternetAvailable() && MovieDataSingleton.getInstance().isEmpty()) {
+            Intent mServiceIntent = new Intent(getActivity(), TmdbPullService.class);
+            mServiceIntent.putStringArrayListExtra("categories",
+                    new ArrayList<>(Arrays.asList("category1", "category2", "category3")));
+            getActivity().startService(mServiceIntent);
+        }
     }
 
     @Override
     public void onStart() {
         Log.i(TAG, "ListFragment is now visible to the user");
         super.onStart();
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver((receiver),
+                new IntentFilter(TmdbPullService.TMDB_RESULT));
     }
 
     @Override
     public void onResume() {
         Log.i(TAG, "ListFragment is now able to interact with the user");
         super.onResume();
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver((receiver),
+                new IntentFilter(TmdbPullService.TMDB_RESULT));
     }
 
     @Override
@@ -64,6 +115,7 @@ public class ListFragment extends Fragment {
         Log.i(TAG, "ListFragment is no longer interacting with the user either " +
                 "because its activity is being paused or a fragment operation is modifying it in the activity.");
         super.onPause();
+        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(receiver);
     }
 
     @Override
@@ -71,37 +123,51 @@ public class ListFragment extends Fragment {
         Log.i(TAG, "ListFragment fragment is no longer visible to the user either " +
                 "because its activity is being stopped or a fragment operation is modifying it in the activity.");
         super.onStop();
+        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(receiver);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.main_fragment, container, false);
+        if (MovieDataSingleton.getInstance().isEmpty()) {
+            View view = inflater.inflate(R.layout.no_data_screen, container, false);
+            if (!isInternetAvailable()) {
+                TextView noConnection = (TextView) view.findViewById(R.id.no_internet_connection);
+                noConnection.setVisibility(View.VISIBLE);
+                NotificationCompat.Builder mBuilder =
+                        new NotificationCompat.Builder(getActivity())
+                                .setSmallIcon(R.drawable.ic_announcement_black_24dp)
+                                .setContentTitle("No internet connection")
+                                .setContentText("Please check your internet connection");
+                NotificationManager mNotifyMgr =
+                        (NotificationManager) getActivity().getSystemService(NOTIFICATION_SERVICE);
+                mNotifyMgr.notify(NotificationConstants.noConnectionNotifId, mBuilder.build());
+            }
+            return view;
+        } else {
+            View view = inflater.inflate(R.layout.main_fragment, container, false);
+            return view;
+        }
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        Button mClickButton1 = (Button) view.findViewById(R.id.miss_button);
-        mClickButton1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDetail(movies.get(0));
-            }
-        });
-        Button mClickButton2 = (Button) view.findViewById(R.id.deepwater_button);
-        mClickButton2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDetail(movies.get(1));
-            }
-        });
-        Button mClickButton3 = (Button) view.findViewById(R.id.rings_button);
-        mClickButton3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDetail(movies.get(2));
-            }
-        });
+        if (!MovieDataSingleton.getInstance().isEmpty()) {
+            fillRecyclerView(view, R.id.recycler_view_movies_category1, MovieDataSingleton.getInstance().getMoviesThisWeek());
+            fillRecyclerView(view, R.id.recycler_view_movies_category2, MovieDataSingleton.getInstance().getMoviesPopularThisYear());
+            fillRecyclerView(view, R.id.recycler_view_movies_category3, MovieDataSingleton.getInstance().getMoviesPopularAllTime());
+        }
+    }
+
+    private void fillRecyclerView(View view, int id, List<Movie> movies) {
+        if (movies != null && movies.size() != 0) {
+            mRecyclerView = (RecyclerView) view.findViewById(id);
+            mRecyclerView.setHasFixedSize(true);
+            mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+            mRecyclerView.setLayoutManager(mLayoutManager);
+            mAdapter = new RecyclerViewAdapter(movies, getActivity());
+            mRecyclerView.setAdapter(mAdapter);
+        }
     }
 
     @Override
@@ -121,52 +187,5 @@ public class ListFragment extends Fragment {
     public void onDetach() {
         Log.i(TAG, "ListFragment is being detached from activity");
         super.onDetach();
-    }
-
-    private long convertDateToLong(String dateString) {
-        SimpleDateFormat Formatter = new SimpleDateFormat("yyyy/MM/dd");
-        Date releaseDate = new Date();
-        try {
-            releaseDate = Formatter.parse(dateString);
-        } catch (ParseException e) {
-            Log.e(TAG, "Release date could not be parsed");
-        }
-        return releaseDate.getTime();
-    }
-
-    private void createFakeMoviesData() {
-        Movie rings = new Movie(convertDateToLong("2016/02/02"), "R.drawable.rings", "Rings", "R.drawable.rings_backdrop", 85f, "OVERVIEW \n\nTwo high school students, Katie Embry and Becca Kotler, have a sleepover and discuss the urban legend of a cursed videotape that will kill anyone seven days after watching it. Katie reveals that she watched the said tape with her boyfriend and two other friends last week but Becca assumes that she is trying to prank her. At 10 PM, Katie goes downstairs where she witnesses several supernatural occurrences, such as the TV turning on by itself. Frightened, she calls out to Becca but hears no response.");
-        Movie miss = new Movie(convertDateToLong("2016/09/29"), "R.drawable.miss_peregrines_home_for_peculiar_children", "Miss Peregrine's home for peculiar children",
-                "R.drawable.miss_peregrines_home_for_peculiar_children_backdrop", 75f, "OVERVIEW \n\nMiss Peregrine's Home for Peculiar Children is the debut novel by American author Ransom Riggs. It is a story of a boy who, following a horrific family tragedy, follows clues that take him to an abandoned children's home on a Welsh island.");
-        Movie deepWater = new Movie(convertDateToLong("2016/09/29"), "R.drawable.deepwater_horizon", "Deepwater",
-                "R.drawable.deepwater_horizon_backdrop", 65f, "OVERVIEW \n\nOn April 20, 2010, Deepwater Horizon, an oil drilling ship operated by private contractor Transocean, is set to begin drilling off the southern coast of Louisiana on behalf of BP. Crew members Michael Mike Williams (Mark Wahlberg) and his superior, James Jimmy Harrell (Kurt Russell), are surprised to learn that the workers assigned to pour the concrete foundation intended to keep the well stable are being sent home early without conducting a pressure test, at the insistence of BP liaison Donald Vidrine (John Malkovich).");
-
-        movies.add(miss);
-        movies.add(deepWater);
-        movies.add(rings);
-    }
-
-    private void showDetail(Movie movie) {
-        if (movieDetailFragment == null) {
-            movieDetailFragment = MovieDetailFragment.newInstance(movie);
-            Bundle bundle = new Bundle();
-            bundle.putParcelable("movie", movie);
-            movieDetailFragment.setArguments(bundle);
-        } else
-            movieDetailFragment.getArguments().putParcelable("movie", movie);
-
-        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-        if (getResources().getBoolean(R.bool.isTablet)) {
-            fragmentTransaction
-                    .detach(movieDetailFragment)
-                    .attach(movieDetailFragment)
-                    .replace(R.id.fragment_container, movieDetailFragment, "MovieDetailFragment")
-                    .commit();
-        } else {
-            fragmentTransaction
-                    .replace(R.id.fragment_container, movieDetailFragment, "MovieDetailFragment")
-                    .addToBackStack(null)
-                    .commit();
-        }
     }
 }
