@@ -1,4 +1,4 @@
-package cz.muni.fi.pv256.movio2.uco374585.Service;
+package cz.muni.fi.pv256.movio2.uco374585.service;
 
 import android.app.IntentService;
 import android.app.NotificationManager;
@@ -18,17 +18,17 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import cz.muni.fi.pv256.movio2.uco374585.Api.Query;
-import cz.muni.fi.pv256.movio2.uco374585.Api.TMDBApi;
-import cz.muni.fi.pv256.movio2.uco374585.Data.MovieDataSingleton;
-import cz.muni.fi.pv256.movio2.uco374585.Models.DiscoverResponse;
-import cz.muni.fi.pv256.movio2.uco374585.Models.Movie;
+import cz.muni.fi.pv256.movio2.uco374585.api.Query;
+import cz.muni.fi.pv256.movio2.uco374585.api.TMDBApi;
+import cz.muni.fi.pv256.movio2.uco374585.data.MovieDataSingleton;
+import cz.muni.fi.pv256.movio2.uco374585.models.DiscoverResponse;
+import cz.muni.fi.pv256.movio2.uco374585.models.Movie;
 import cz.muni.fi.pv256.movio2.uco374585.R;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-import static cz.muni.fi.pv256.movio2.uco374585.Api.Query.DISCOVER_URL;
+import static cz.muni.fi.pv256.movio2.uco374585.api.Query.DISCOVER_URL;
 
 /**
  * Created by Skylar on 1/16/2017.

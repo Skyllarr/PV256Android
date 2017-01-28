@@ -1,15 +1,15 @@
-package cz.muni.fi.pv256.movio2.uco374585.Api;
+package cz.muni.fi.pv256.movio2.uco374585.api;
 
 /**
  * Created by Skylar on 1/16/2017.
  */
 
-import cz.muni.fi.pv256.movio2.uco374585.Models.DiscoverResponse;
+import cz.muni.fi.pv256.movio2.uco374585.models.DiscoverResponse;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
-public interface TMDBApi {
+public interface TmdbApi {
 
     @GET("movie")
     Call<DiscoverResponse> loadMoviesFromDateToDate(@Query("primary_release_date.gte") String dateFrom,

@@ -1,11 +1,8 @@
-package cz.muni.fi.pv256.movio2.uco374585.Data;
+package cz.muni.fi.pv256.movio2.uco374585.data;
 
 import android.content.ContentUris;
 import android.net.Uri;
 import android.provider.BaseColumns;
-
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
 
 /**
  * Created by Skylar on 1/19/2017.

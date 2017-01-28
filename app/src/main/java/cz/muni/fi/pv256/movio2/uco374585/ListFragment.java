@@ -27,11 +27,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import cz.muni.fi.pv256.movio2.uco374585.Data.Loaders.MovieFindAllDbLoader;
-import cz.muni.fi.pv256.movio2.uco374585.Data.MovieDataSingleton;
-import cz.muni.fi.pv256.movio2.uco374585.Models.Movie;
-import cz.muni.fi.pv256.movio2.uco374585.Service.NotificationConstants;
-import cz.muni.fi.pv256.movio2.uco374585.Service.TmdbPullService;
+import cz.muni.fi.pv256.movio2.uco374585.data.loaders.MovieFindAllDbLoader;
+import cz.muni.fi.pv256.movio2.uco374585.data.MovieDataSingleton;
+import cz.muni.fi.pv256.movio2.uco374585.models.Movie;
+import cz.muni.fi.pv256.movio2.uco374585.service.NotificationConstants;
+import cz.muni.fi.pv256.movio2.uco374585.service.TmdbPullService;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
 

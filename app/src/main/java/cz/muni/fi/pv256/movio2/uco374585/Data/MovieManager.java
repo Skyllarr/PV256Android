@@ -1,4 +1,4 @@
-package cz.muni.fi.pv256.movio2.uco374585.Data;
+package cz.muni.fi.pv256.movio2.uco374585.data;
 
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import cz.muni.fi.pv256.movio2.uco374585.Models.Movie;
+import cz.muni.fi.pv256.movio2.uco374585.models.Movie;
 
 /**
  * Created by Skylar on 1/19/2017.
@@ -23,8 +23,8 @@ public class MovieManager {
     private static final int COL_RELEASE_DATE = 3;
     private static final int COL_POSTER_PATH = 4;
     private static final int COL_BACKDROP_PATH = 5;
-    private static final int COL_VOTE_AVERAGE = 6;
-    private static final int COL_POPULARITY = 7;
+    private static final int COL_POPULARITY = 6;
+    private static final int COL_VOTE_AVERAGE = 7;
     private static final int COL_OVERVIEW = 8;
 
     private static final String[] MOVIE_COLUMNS = {
@@ -34,8 +34,8 @@ public class MovieManager {
             MovieContract.MovieEntry.COLUMN_RELEASE_DATE,
             MovieContract.MovieEntry.COLUMN_POSTER_PATH,
             MovieContract.MovieEntry.COLUMN_BACKDROP_PATH,
-            MovieContract.MovieEntry.COLUMN_VOTE_AVERAGE,
             MovieContract.MovieEntry.COLUMN_POPULARITY,
+            MovieContract.MovieEntry.COLUMN_VOTE_AVERAGE,
             MovieContract.MovieEntry.COLUMN_OVERVIEW
     };
 

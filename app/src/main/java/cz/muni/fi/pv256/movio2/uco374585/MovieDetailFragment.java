@@ -26,11 +26,11 @@ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 import java.util.List;
 
-import cz.muni.fi.pv256.movio2.uco374585.Data.Loaders.MovieCreateDbLoader;
-import cz.muni.fi.pv256.movio2.uco374585.Data.Loaders.MovieDeleteDbLoader;
-import cz.muni.fi.pv256.movio2.uco374585.Data.Loaders.MovieFindDbLoader;
-import cz.muni.fi.pv256.movio2.uco374585.Data.MovieManager;
-import cz.muni.fi.pv256.movio2.uco374585.Models.Movie;
+import cz.muni.fi.pv256.movio2.uco374585.data.loaders.MovieCreateDbLoader;
+import cz.muni.fi.pv256.movio2.uco374585.data.loaders.MovieDeleteDbLoader;
+import cz.muni.fi.pv256.movio2.uco374585.data.loaders.MovieFindDbLoader;
+import cz.muni.fi.pv256.movio2.uco374585.data.MovieManager;
+import cz.muni.fi.pv256.movio2.uco374585.models.Movie;
 
 public class MovieDetailFragment extends Fragment {
 
@@ -84,8 +84,9 @@ public class MovieDetailFragment extends Fragment {
     }
 
     public void setImages(View view) {
-        imageLoader.displayImage(movie.getCoverPath(), (ImageView) view.findViewById(R.id.movie_image));
-        imageLoader.displayImage(movie.getBackdrop(), (ImageView) view.findViewById(R.id.movie_backdrop));
+        imageLoader.displayImage(movie.getCoverPath().replace("original//", "original/"), (ImageView) view.findViewById(R.id.movie_image));
+        imageLoader.displayImage(movie.getBackdrop().replace("original//", "original/"), (ImageView) view.findViewById(R.id.movie_backdrop));
+
 
         final ProgressBar spinnerCover = (ProgressBar) view.findViewById(R.id.spinner_cover_detail);
         imageLoader.displayImage(movie.getCoverPath(), (ImageView) view.findViewById(R.id.movie_image),
@@ -123,9 +124,7 @@ public class MovieDetailFragment extends Fragment {
         description.setText(movie.getDescription());
 
         TextView popularity = (TextView) view.findViewById(R.id.popularity);
-        popularity.setText("" + movie.getPopularity());
-        String text = popularity.getText().toString();
-        popularity.setText(text.substring(0, text.length() - 2) + "%");
+        popularity.setText(String.format( "%.1f", movie.getPopularity() ));
     }
 
     public void setResources(View view) {

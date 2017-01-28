@@ -1,4 +1,4 @@
-package cz.muni.fi.pv256.movio2.uco374585.Data;
+package cz.muni.fi.pv256.movio2.uco374585.data;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

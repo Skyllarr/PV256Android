@@ -1,4 +1,4 @@
-package cz.muni.fi.pv256.movio2.uco374585.Models;
+package cz.muni.fi.pv256.movio2.uco374585.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -34,8 +34,8 @@ public class Movie implements Parcelable {
         this.coverPath = parcel.readString();
         this.title = parcel.readString();
         this.backdrop = parcel.readString();
-        this.voteAverage = parcel.readFloat();
         this.popularity = parcel.readFloat();
+        this.voteAverage = parcel.readFloat();
         this.description = parcel.readString();
     }
 
