@@ -63,9 +63,6 @@ public class ListMoviesTest {
     @Test
     public void testShowFavouriteFilms() throws IOException, InterruptedException {
         Thread.sleep(3000);
-        onView(withId(R.id.action_home))
-                .perform(click());
-        Thread.sleep(3000);
         openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
         Thread.sleep(3000);
         onView(withText(rule.getActivity().getString(R.string.favourites)))
@@ -76,9 +73,6 @@ public class ListMoviesTest {
 
     @Test
     public void testShowDiscoverFilms() throws IOException, InterruptedException {
-        Thread.sleep(3000);
-        onView(withId(R.id.action_home))
-                .perform(click());
         Thread.sleep(3000);
         openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
         Thread.sleep(3000);
@@ -91,24 +85,9 @@ public class ListMoviesTest {
     @Test
     public void testShowDetailFilm() throws IOException, InterruptedException {
         Thread.sleep(3000);
-        onView(withId(R.id.action_home))
-                .perform(click());
-        Thread.sleep(1000);
         onView(withId(R.id.recycler_view_movies_category1))
                 .perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
         Thread.sleep(3000);
         onView(withId(R.id.movie_title)).check(matches(isDisplayed()));
-    }
-
-    @Test
-    public void testHome() throws IOException, InterruptedException {
-        Thread.sleep(3000);
-        onView(withId(R.id.recycler_view_movies_category1))
-                .perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
-        Thread.sleep(1000);
-        onView(withId(R.id.action_home))
-                .perform(click());
-        Thread.sleep(1000);
-        onView(withId(R.id.category1)).check(matches(withText(startsWith(rule.getActivity().getString(R.string.category1)))));
     }
 }

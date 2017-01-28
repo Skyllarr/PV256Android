@@ -23,7 +23,10 @@ android {
                     "$project.name-$variant.name-$variant.versionName-${variant.versionCode}.apk")
         }
 
-        variant.resValue "string", "CONTENT_AUTHORITY", defaultConfig.applicationId + ".provider"
+        def flavor = variant.productFlavors.get(0).name
+        def build = variant.buildType.name
+        def suffix = "." + flavor + "." + build
+        variant.resValue "string", "CONTENT_AUTHORITY", defaultConfig.applicationId + suffix + ".provider"
     }
 
     signingConfigs {
@@ -42,7 +45,7 @@ android {
         minSdkVersion 15
         targetSdkVersion 23
 
-        resConfigs "sk", "cs", "ja", "en"
+        resConfigs "sk", "cs", "en"
 
         versionCode VERSION_MAJOR * 10000 + VERSION_MINOR * 1000 + VERSION_PATCH * 100 + VERSION_BUILD
         versionName "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}"
@@ -69,10 +72,12 @@ android {
     productFlavors {
         themeblueflavour {
             buildConfigField "boolean", "logging", "true"
+            resValue "string", "APP_NAME", "Movio"
         }
         themeorangeflavour {
             buildConfigField "boolean", "logging", "false"
             applicationId "cz.muni.fi.pv256.movio2.uco374585.orange"
+            resValue "string", "APP_NAME", "Orange Movio"
         }
     }
 }

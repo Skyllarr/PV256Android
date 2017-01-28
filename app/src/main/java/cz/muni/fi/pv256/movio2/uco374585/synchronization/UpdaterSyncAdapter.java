@@ -86,7 +86,7 @@ public class UpdaterSyncAdapter extends AbstractThreadedSyncAdapter {
         AccountManager accountManager = (AccountManager) context.getSystemService(Context.ACCOUNT_SERVICE);
 
         // Create the account type and default account
-        Account newAccount = new Account(context.getString(R.string.app_name), context.getString(R.string.sync_account_type));
+        Account newAccount = new Account(context.getString(R.string.APP_NAME), context.getString(R.string.sync_account_type));
 
         // If the password doesn't exist, the account doesn't exist
         if (null == accountManager.getPassword(newAccount)) {
