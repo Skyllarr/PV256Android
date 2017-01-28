@@ -106,21 +106,6 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         FragmentTransaction transaction;
         switch (item.getItemId()) {
-            case R.id.action_home:
-                MovieDetailFragment movieDetailFragment =
-                        (MovieDetailFragment) getSupportFragmentManager().findFragmentByTag(getString(R.string.detail_fragment_tag));
-                if (!getResources().getBoolean(R.bool.isTablet) &&
-                        movieDetailFragment != null &&
-                        movieDetailFragment.isVisible()) {
-                    FragmentManager fm = getSupportFragmentManager();
-                    for (int i = 0; i < fm.getBackStackEntryCount(); ++i) {
-                        fm.popBackStack();
-                    }
-                    fm.beginTransaction()
-                            .add(R.id.fragment_container, ListFragment.newInstance(), getString(R.string.list_fragment_tag))
-                            .commit();
-                }
-                return true;
             case R.id.favourites:
                 return false;
             case R.id.discover:
