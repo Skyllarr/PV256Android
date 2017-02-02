@@ -62,10 +62,12 @@ android {
             minifyEnabled false
             debuggable false
             signingConfig signingConfigs.releaseConfig
+            testBuildType "release"
         }
         debug {
             debuggable true
             applicationIdSuffix '.debug'
+            testBuildType "debug"
         }
     }
 
