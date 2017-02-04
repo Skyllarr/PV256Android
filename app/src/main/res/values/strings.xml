@@ -1,6 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Movio</string>
-    <string name="displaying">This week opening</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="movie_title">Movie Title</string>
+    <string name="refresh">Refresh</string>
+    <string name="stored">Stored</string>
+    <string name="checkable">Favourites</string>
+    <string name="sync_account_type">cz.muni.fi.pv256.movio2.uco374585</string>
+    <string name="refresh_db">Refresh db</string>
+    <string name="detail_fragment_tag">MovieDetailFragment</string>
+    <string name="list_fragment_tag">ListFragment</string>
+
+    <string name="displaying">Most popular</string>
+    <string name="category1">This week opening</string>
+    <string name="category2">Most upvoted this year</string>
+    <string name="category3">Most popular of all times</string>
+    <string name="home">Home</string>
+    <string name="favourite_movie">Movie was saved to favourites.</string>
+    <string name="favourites">Favourites</string>
+    <string name="discover">Discover</string>
+    <string name="change_theme">Change theme</string>
+    <string name="up_to_date_toast">Up to date.</string>
+    <string name="movies_have_updated">Movies have been updated.</string>
 </resources>

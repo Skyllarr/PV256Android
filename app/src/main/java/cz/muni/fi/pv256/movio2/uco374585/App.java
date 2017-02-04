@@ -1,6 +1,7 @@
 package cz.muni.fi.pv256.movio2.uco374585;
 
 import android.app.Application;
+import android.content.Context;
 import android.os.Build;
 import android.os.StrictMode;
 
@@ -8,13 +9,20 @@ import android.os.StrictMode;
  * Created by xvilkol1 on 20.9.16.
  */
 public class App extends Application {
+    private static Context mContext;
+
     @Override
     public void onCreate() {
+
         super.onCreate();
 
         if (BuildConfig.DEBUG) {
             initStrictMode();
         }
+    }
+
+    public static Context getContext(){
+        return mContext;
     }
 
     private void initStrictMode() {
@@ -33,5 +41,12 @@ public class App extends Application {
             vmpb.detectLeakedClosableObjects();
         }
         StrictMode.setVmPolicy(vmpb.build());
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        mContext = this;
+        // some of your own operations before content provider will launch
     }
 }

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="displaying">Nejpopulárneší</string>
+    <string name="category1">Otevíra tenhle víkend</string>
+    <string name="category2">Najvyššie hodnotené tento rok</string>
+    <string name="category3">Nejpopulárnejší všetkých dob</string>
+    <string name="home">Domov</string>
+    <string name="favourite_movie">Film se uložil do oblíbených.</string>
+    <string name="favourites">Oblíbené</string>
+    <string name="discover">Hledat</string>
+    <string name="change_theme">Změnit tému</string>
+    <string name="up_to_date_toast">Filmy sú aktuální.</string>
+    <string name="movies_have_updated">Filmy byli updatenuté.</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="movie_title">Movie Title</string>
+    <string name="refresh">Refresh</string>
+    <string name="stored">Stored</string>
+    <string name="checkable">Favourites</string>
+    <string name="sync_account_type">cz.muni.fi.pv256.movio2.uco374585</string>
+    <string name="refresh_db">Refresh db</string>
+    <string name="detail_fragment_tag">MovieDetailFragment</string>
+    <string name="list_fragment_tag">ListFragment</string>
+</resources>

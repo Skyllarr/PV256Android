@@ -21,19 +21,47 @@
             android:layout_weight="1.0"
             android:background="@color/colorAccent">
 
-            <ImageView
-                android:id="@+id/movie_backdrop"
+            <RelativeLayout
+                android:id="@+id/backdrop_image_container"
                 android:layout_width="match_parent"
-                android:layout_height="130dp"
-                android:scaleType="fitXY"
-                app:srcCompat="@drawable/rings_backdrop" />
+                android:layout_height="130dp">
 
-            <ImageView
-                android:id="@+id/movie_image"
+                <ProgressBar
+                    android:id="@+id/spinner_backdrop_detail"
+                    style="@android:style/Widget.ProgressBar.Inverse"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true" />
+
+                <ImageView
+                    android:id="@+id/movie_backdrop"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/cover_image_container"
                 android:layout_width="100dp"
                 android:layout_height="130dp"
-                android:layout_marginTop="80dp"
-                app:srcCompat="@drawable/rings" />
+                android:layout_marginTop="80dp">
+
+                <ProgressBar
+                    android:id="@+id/spinner_cover_detail"
+                    style="@android:style/Widget.ProgressBar.Inverse"
+                    android:layout_width="100dp"
+                    android:layout_height="130dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="80dp" />
+
+                <ImageView
+                    android:id="@+id/movie_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </RelativeLayout>
 
             <TextView
                 android:id="@+id/movie_title"
@@ -63,6 +91,7 @@
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentRight="true"
                 android:layout_marginBottom="30dp"
+                android:layout_marginRight="10dp"
                 android:text="Popularity" />
         </RelativeLayout>
 
@@ -82,7 +111,9 @@
                     android:id="@+id/movie_description"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Movie Description" />
+                    android:padding="5dp"
+                    android:layout_marginTop="15dp"
+                    android:text="Missing Description" />
             </ScrollView>
 
         </LinearLayout>
@@ -95,7 +126,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:clickable="false"
-        android:src="@drawable/ic_action_favorite"
+        android:src="@drawable/ic_rating_star"
         app:layout_anchor="@id/viewA"
         app:layout_anchorGravity="bottom|right|end" />
 </android.support.design.widget.CoordinatorLayout>

@@ -1,29 +1,116 @@
 apply plugin: 'com.android.application'
 
+def keystorePropertiesFile = rootProject.file("keystore.properties")
+def keystoreProperties
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties = new Properties()
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
+
+def VERSION_MAJOR = 1
+def VERSION_MINOR = 0
+def VERSION_PATCH = 0
+def VERSION_BUILD = 0
+
 android {
-    compileSdkVersion 24
+    compileSdkVersion 23
     buildToolsVersion "24.0.2"
+
+    applicationVariants.all { variant -> // .all stejně jako each prochází všechny prvky kolekce, ale aplikuje se i v případě, že v ní přibudou nové prvky
+        variant.outputs.each { output ->
+            output.outputFile = new File(
+                    output.outputFile.parent,
+                    "$project.name-$variant.name-$variant.versionName-${variant.versionCode}.apk")
+        }
+
+        def flavor = variant.productFlavors.get(0).name
+        def build = variant.buildType.name
+        def suffix = "." + flavor + "." + build
+        variant.resValue "string", "CONTENT_AUTHORITY", defaultConfig.applicationId + suffix + ".provider"
+    }
+
+    signingConfigs {
+        if (keystorePropertiesFile.exists()) {
+            releaseConfig {
+                storeFile file('C:/Users/Skylar/school/Android proramovanie/Keystores/gradlekeystore.jks')
+                keyAlias keystoreProperties['KEY_ALIAS']
+                keyPassword keystoreProperties['KEY_PASSWORD']
+                storePassword keystoreProperties['STORE_PASSWORD']
+            }
+        }
+    }
 
     defaultConfig {
         applicationId "cz.muni.fi.pv256.movio2.uco374585"
         minSdkVersion 15
-        targetSdkVersion 24
-        versionCode 1
-        versionName "1.0"
+        targetSdkVersion 23
+
+        resConfigs "sk", "cs", "en"
+
+        versionCode VERSION_MAJOR * 10000 + VERSION_MINOR * 1000 + VERSION_PATCH * 100 + VERSION_BUILD
+        versionName "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            debuggable false
+            signingConfig signingConfigs.releaseConfig
+            testBuildType "release"
+        }
+        debug {
+            debuggable true
+            applicationIdSuffix '.debug'
+            testBuildType "debug"
+        }
+    }
+
+    productFlavors {
+        themeblueflavour {
+            buildConfigField "boolean", "logging", "true"
+            resValue "string", "APP_NAME", "Movio"
+        }
+        themeorangeflavour {
+            buildConfigField "boolean", "logging", "false"
+            applicationId "cz.muni.fi.pv256.movio2.uco374585.orange"
+            resValue "string", "APP_NAME", "Orange Movio"
         }
     }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:24.2.1'
-    compile 'com.android.support:recyclerview-v7:24.2.1'
-    compile 'com.android.support:support-v4:24.2.1'
-    compile 'com.android.support:design:24.2.1'
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    //compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.android.support:appcompat-v7:23.1.1'
+    compile 'com.android.support:recyclerview-v7:23.1.1'
+    compile 'com.android.support:support-v4:23.1.1'
+    compile 'com.android.support:design:23.1.1'
+    compile 'com.android.support:cardview-v7:23.1.1+'
+    compile 'com.android.support:palette-v7:23.1.1'
+    compile 'com.google.code.gson:gson:2.6.2'
+    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
+    compile 'com.squareup.retrofit2:retrofit:2.1.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
+    compile 'joda-time:joda-time:2.9.4'
+    testCompile 'org.mockito:mockito-all:1.10.19'
+    androidTestCompile 'junit:junit:4.12'
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    androidTestCompile('com.android.support.test.espresso:espresso-contrib:2.2') {
+        // Necessary to avoid version conflicts
+        exclude group: 'com.android.support', module: 'appcompat'
+        exclude group: 'com.android.support', module: 'support-v4'
+        exclude group: 'com.android.support', module: 'support-annotations'
+        exclude module: 'recyclerview-v7'
+    }
+    testCompile 'org.mockito:mockito-all:1.10.19'
+    testCompile 'junit:junit:4.12'
     testCompile 'junit:junit:4.12'
 }

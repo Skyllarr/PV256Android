@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="cz.muni.fi.pv256.movio2.uco374585">
+
+    <application
+
+        android:theme="@style/AppBaseTheme"></application>
+</manifest>
